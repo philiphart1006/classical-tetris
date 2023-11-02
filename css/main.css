@@ -1,0 +1,78 @@
+* {
+    /* height & width now includes border & padding */
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 16px
+  }
+
+  body {
+    height: 100vh;
+    margin: 0;
+    font-family: Helvetica;
+    background-color:aliceblue;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  section {
+    background-color: aquamarine;
+  }
+
+  .dropGrid {
+    width: 66%;
+    height: 100%;
+    background-color: darkgrey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em
+  }
+
+  .sidebar {
+    background-color: bisque;
+    height: 100%;
+    width: 34%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .sidebar * {
+    margin: 0.5em 1em;
+    
+  }
+
+  .sidebar p {
+    background-color: cadetblue;
+    margin: 2em 3em;
+    padding: 0.5em;
+    min-height: 3em;
+    text-align: center;
+  }
+
+  button.start {
+    width: 33%;
+    padding: 1em;
+    font-weight: bold;
+    margin: 1em 0 0 0
+  }
+
+  h1 {
+    font-size: 3em
+  }
+
+  h2 {
+    font-size: 1.5em
+  }
+
+  .logo {
+    width: 75%;
+    align-self: center;
+  }
+
+  .nextPieceGrid {
+    background-color: black;
+    margin: 2em;
+    aspect-ratio: 1
+  }
