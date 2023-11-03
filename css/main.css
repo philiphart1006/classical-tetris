@@ -106,30 +106,30 @@
 
   }
 
-  .held {
+  .holdingGrid {
 
   }
 
-  .typeStraight{
+  .piece.typeStraight{
     background-color: aqua;
   }
   
-  .typeReverseL{
+  .piece.typeReverseL{
     background-color: blue;
   }
-  .typeL{
+  .piece.typeL{
     background-color: orange;
   }
-  .typeSquare{
+  .piece.typeSquare{
     background-color: yellow;
   }
-  .typeZ{
+  .piece.typeZ{
     background-color: greenyellow;
   }
-  .typeT{
+  .piece.typeT{
     background-color: purple;
   }
-  .typeReverseZ{
+  .piece.typeReverseZ{
     background-color: red;
   }
 
