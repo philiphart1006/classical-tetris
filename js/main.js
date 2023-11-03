@@ -9,7 +9,7 @@
 // Get DOM elements for main grid, preview grid, start button
 const dropGridEl = document.querySelector('.dropGrid')
 const previewGridEl = document.querySelector('.previewGrid')
-const startButton = document.querySelector('.start')
+let startButton = document.querySelector('.start')
 
 // Welcome elements that will be hidden on game start
 const welcomeNL = document.querySelectorAll('.welcome')
@@ -37,6 +37,7 @@ let highScore = 0
 let level = 1
 const timeInterval = 1000
 const starterSquare = width * 3.5 - 1
+let gameOver = false
 
 // ! Preview Grid
 // Create a preview grid that is 4x4 to display upcoming tetromino
@@ -88,7 +89,14 @@ function createMainGrid() {
 // Another set of complementary classes to create in the holding bay?
 let type
 let Starters = []
+const shapesArray = ['Square','L','ReverseL','Z','ReverseZ','T','Straight']
 
+function createRandomPiece(){
+  const shape = shapesArray[Math.floor(Math.random() * shapesArray.length)]
+  console.log('shape: ', shape)
+  const fnToRun = `setPiece${shape}`
+  eval(fnToRun + '(dropCells)')
+} 
 //Square (F)
 function setPieceSquare(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - width + 1)] : Starters = [9, 10, 13, 14]
@@ -178,6 +186,9 @@ function keyupFunctions(evt){
   } else if (key === 'Semicolon'){
     // Put function to test in here
     setPieceStraight(dropCells)
+  } else if (key === 'KeyD'){
+    // Put function to test in here
+    createRandomPiece()
   }
 }
 
@@ -201,6 +212,9 @@ function startGame () {
   createMainGrid()
   startVariables()
   console.log('GAME STARTED')
+  createRandomPiece()
+  activateHoldingFn()
+  autoMoveDownFn()
 }
 //Game setup functions
 // Hides welcome class elements by adding hidden attribute to welcome class node list
@@ -273,15 +287,33 @@ function moveDownFn(){
       cell.classList.remove('moving')
       cell.classList.add('landed')
     })
+    activateHoldingFn()
+    autoMoveDownFn()
   }
   gameOverCheckFn()
+  holdingBayEmptyFn()
 }
+
+// * Code to pull from (originally written for game over function; recycling for holding bay empty)
+function holdingBayEmptyFn(){
+  console.log('HOLDING BAY CHECK FUNCTION')
+  const holdingBayNL = document.querySelector('.holdingGrid.piece')
+  console.log('HOLDING NODE LIST: ', holdingBayNL)
+  console.log('Boolean of holdingBayNL: ', !holdingBayNL)
+  if (!holdingBayNL === true) {
+    createRandomPiece()
+  }
+}
+// * Down to here
 
 function autoMoveDownFn(){
   clearInterval
   interval = setInterval(() => {
     console.log('AUTO MOVE DOWN FUNCTION EXECUTED')
     moveDownFn()
+    if (gameOver === true){
+      clearInterval(interval)
+    }
   }, timeInterval)
 }
 
@@ -389,7 +421,9 @@ function gameOverFn() {
     highScore = score
   }
   console.log('GAME OVER')
-  dropGridEl.innerHTML = '<h1>GAME OVER<h1>'
+  dropGridEl.innerHTML = '<h1>GAME OVER<h1><button class="welcome start">START</button>'
+  gameOver = true
+  startButton = document.querySelector('.start')
   dropCells = []
   welcomeNL.forEach(function(element){
     element.setAttribute('hidden', false)
