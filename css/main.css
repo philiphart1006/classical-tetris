@@ -11,28 +11,33 @@
     font-family: Helvetica;
     background-color:aliceblue;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   section {
     background-color: aquamarine;
   }
 
+  section.welcome{
+    background-color: peachpuff;
+    padding: 1em
+  }
+
   .dropGrid {
-    width: 66%;
-    height: 100%;
+    max-height: 100%;
+    aspect-ratio: 10 / 24;
     background-color: darkgrey;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 2em
   }
 
   .sidebar {
     background-color: bisque;
     height: 100%;
-    width: 34%;
+    width: 50%;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,7 +50,7 @@
 
   .sidebar p {
     background-color: cadetblue;
-    margin: 2em 3em;
+    margin: 1em 2em;
     padding: 0.5em;
     min-height: 3em;
     text-align: center;
@@ -66,13 +71,66 @@
     font-size: 1.5em
   }
 
+  div {
+    border: solid;
+    border-width: 1px;
+    border-color: darkgray
+  }
+
   .logo {
     width: 75%;
     align-self: center;
   }
 
-  .nextPieceGrid {
+  .previewGrid {
     background-color: black;
     margin: 2em;
-    aspect-ratio: 1
+    aspect-ratio: 1;
+    display: flex;
+    flex-wrap: wrap
   }
+
+
+  .holdingGrid {
+    /* Make the top 4 * width cells hidden with hidden attribute */
+    background-color: peachpuff;
+    /* display: none */
+  }
+
+  /* Assignable classes for pieces: */
+  .Piece {
+
+  }
+
+  .preview{
+
+  }
+
+  .held {
+
+  }
+
+  .typeStraight{
+    background-color: aqua;
+  }
+  
+  .typeReverseL{
+    background-color: blue;
+  }
+  .typeL{
+    background-color: orange;
+  }
+  .typeSquare{
+    background-color: yellow;
+  }
+  .typeZ{
+    background-color: greenyellow;
+  }
+  .typeT{
+    background-color: purple;
+  }
+  .typeReverseZ{
+    background-color: red;
+  }
+
+
