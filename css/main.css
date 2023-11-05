@@ -9,7 +9,7 @@
     height: 100vh;
     margin: 0;
     font-family: Helvetica;
-    background-color:aliceblue;
+    background-color: rgb(33, 58, 33);
     display: flex;
     justify-content: center;
   }
@@ -24,7 +24,8 @@
   }
 
   .dropGrid {
-    max-height: 100%;
+    height: 100%;
+    /* Update to 0.5 when holdingGrid is hidden */
     aspect-ratio: 10 / 24;
     background-color: darkgrey;
     display: flex;

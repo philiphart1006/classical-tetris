@@ -4,6 +4,9 @@
 // H -> create reverse L piece
 // Z -> start automovedown
 // X -> convert holding piece to active
+// S -> complete line function
+
+// ! Test logging
 
 // ! Elements
 // Get DOM elements for main grid, preview grid, start button
@@ -12,7 +15,7 @@ const previewGridEl = document.querySelector('.previewGrid')
 let startButton = document.querySelector('.start')
 
 // Welcome elements that will be hidden on game start
-const welcomeNL = document.querySelectorAll('.welcome')
+let welcomeNL = document.querySelectorAll('.welcome')
 
 //Sidebar scores
 const scoreEl = document.querySelector('#currentScoreId')
@@ -189,6 +192,9 @@ function keyupFunctions(evt){
   } else if (key === 'KeyD'){
     // Put function to test in here
     createRandomPiece()
+  } else if (key === 'KeyS'){
+    // Put function to test in here
+    completeLineFn()
   }
 }
 
@@ -214,12 +220,13 @@ function startGame () {
   console.log('GAME STARTED')
   createRandomPiece()
   activateHoldingFn()
-  autoMoveDownFn()
+  // autoMoveDownFn()
 }
 //Game setup functions
 // Hides welcome class elements by adding hidden attribute to welcome class node list
 function hideWelcome(){
   console.log('Hide welcome elements')
+  welcomeNL = document.querySelectorAll('.welcome')
   welcomeNL.forEach(function(welcomeEl){
     welcomeEl.setAttribute('hidden', true)
     console.log('Hiding welcome elements iteratively')
@@ -227,11 +234,15 @@ function hideWelcome(){
 }
 // Sets score to 0, level to 1, and timeInterval to 1000ms* (*how quickly do we want pieces to move? Slowly to begin with while coding)
 function startVariables(){
+  console.log('Set start variables')
   score = 0
   //Set scoreEl content to score
   scoreEl.textContent = score
   level = 1
   levelEl.textContent = level
+  gameOverNL = null
+  gameOver = false
+  console.log('Boolean of Game over NL: ', !gameOverNL)
 }
 
 // Generate new random tetromino in preview
@@ -288,8 +299,8 @@ function moveDownFn(){
       cell.classList.add('landed')
     })
     activateHoldingFn()
-    autoMoveDownFn()
   }
+  completeLineCheckFn()
   gameOverCheckFn()
   holdingBayEmptyFn()
 }
@@ -298,8 +309,8 @@ function moveDownFn(){
 function holdingBayEmptyFn(){
   console.log('HOLDING BAY CHECK FUNCTION')
   const holdingBayNL = document.querySelector('.holdingGrid.piece')
-  console.log('HOLDING NODE LIST: ', holdingBayNL)
-  console.log('Boolean of holdingBayNL: ', !holdingBayNL)
+  // console.log('HOLDING NODE LIST: ', holdingBayNL)
+  // console.log('Boolean of holdingBayNL: ', !holdingBayNL)
   if (!holdingBayNL === true) {
     createRandomPiece()
   }
@@ -347,12 +358,15 @@ function arrowDownFn(){
   moveDownFn()
 }
 
+
+//* For left and right, need to add in if filters that check if there are landed pieces next to the active piece
 function arrowLeftFn(){
   console.log('ARROW LEFT FUNCTION EXECUTED')
   let pieceAtLeft = false
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
-    if (parseInt(cell.id) % width === 0) {
+    // Use or operator to check  piece is either at edge of grid or cell to right has a piece in already
+    if (parseInt(cell.id) % width === 0 || dropCells[(cell.id - 1)].classList.contains('landed')) {
       pieceAtLeft = true
     }
   })
@@ -376,7 +390,8 @@ function arrowRightFn(){
   let pieceAtRight = false
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
-    if ((parseInt(cell.id) + 1) % width === 0) {
+    if ((parseInt(cell.id) + 1) % width === 0 || dropCells[(parseInt(cell.id) + 1)].classList.contains('landed')) {
+      console.log('Piece at Right set to true')
       pieceAtRight = true
     }
   })
@@ -406,6 +421,8 @@ function arrowRightFn(){
 //Set new highscore if score > highscore; updates highScore span
 //Clears all intervals
 // Removes the hidden attribute from start button
+
+// * Game over functions
 function gameOverCheckFn(){
   console.log('GAME OVER CHECK FUNCTION')
   gameOverNL = document.querySelector('.holdingGrid.landed')
@@ -421,9 +438,12 @@ function gameOverFn() {
     highScore = score
   }
   console.log('GAME OVER')
-  dropGridEl.innerHTML = '<h1>GAME OVER<h1><button class="welcome start">START</button>'
+  dropGridEl.innerHTML = '<h1 class = "welcome">GAME OVER<h1><button class="welcome start">START</button>'
   gameOver = true
+  clearInterval(interval)
   startButton = document.querySelector('.start')
+  console.log('Start Button element: ', startButton)
+  startButton.addEventListener('click',startGame)
   dropCells = []
   welcomeNL.forEach(function(element){
     element.setAttribute('hidden', false)
@@ -432,6 +452,49 @@ function gameOverFn() {
 
 
 // * Complete line
+function completeLineCheckFn() {
+  // Iterate over rows; within this, iterate over cells
+  for (let row = 4; row < 24; row++){
+    // console.log(`Iterating over row ${row}`)
+    let landedCells = 0
+    for (let cell = row * width; cell < (row + 1) * width; cell++){
+      // console.log('Current value & typeof cell: ', cell, typeof(cell))
+      // console.log('Current dropCells cell being iterated over: ', dropCells[cell])
+      dropCells[cell].classList.contains('landed') ? landedCells += 1 : landedCells
+      // console.log('Landed cells count: ', landedCells)
+    }
+    //! Change this below to completed = 3 while testing
+    // if (landedCells === width){
+    if (landedCells >= 3){
+      completeLineFn(row)
+    }
+  }
+}
+
+//Remove complete line
+function completeLineFn(row){
+  for (let cell = row * width; cell < (row + 1) * width; cell++){
+    dropCells[cell].remove()
+  }
+  // Shift cells above down a row --> Starting from cell 4*width & ending at row just deleted, increase the ID and contents of each cell by width)
+  for (let cellToShift = 4 * width; cellToShift < row * width; cellToShift++ ){
+    const idToShift = parseInt(dropCells[cellToShift].id)
+    dropCells[cellToShift].id = idToShift + width
+    dropCells[cellToShift].innerText = (cellToShift + width)
+  }
+  //Add width cells after index 4*width-1; need to create 5 div elements
+  // ! This needs fixing
+  for (let cellToAdd = 4 * width; cellToAdd < 5 * width; cellToAdd ++) {
+    const newCell = document.createElement('div')
+    newCell.innerText = cellToAdd
+    newCell.id = cellToAdd
+    console.log('New cell: ', newCell)
+    console.log('Drop cells: ', dropCells)
+    const currentCell = dropCells[parseInt(cellToAdd)]
+    console.log('Current cell to insert before: ', currentCell)
+    dropGridEl.insertBefore(newCell, currentCell)
+  }
+}
 // Remove current line
 // Move all landedPieces with lower indices values along by width number of spaces (= down one row)
 // Increase score by 1 & update score span
