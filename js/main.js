@@ -100,7 +100,10 @@ function createRandomPiece(){
   console.log('shape: ', shape)
   const fnToRun = `setPiece${shape}`
   eval(fnToRun + '(dropCells)')
-  // eval(fnToRun + '(previewCells)')
+  previewCells.forEach(function(cell){
+  cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+})
+  eval(fnToRun + '(previewCells)')
 } 
 //Square (F)
 function setPieceSquare(cells) {
@@ -148,9 +151,17 @@ function setPieceStraight(cells) {
 
 function createPiece(cells){
   Starters.forEach(function(StarterIdx){
-    cells[StarterIdx].classList.add('piece','hold',`${type}`)
+    if (cells === dropCells){cells[StarterIdx].classList.add('piece','hold',`${type}`)
+  } else {cells[StarterIdx].classList.add('piece','preview',`${type}`)
+}
   })
 }
+
+// function createPreviewPiece(cells){
+//   Starters.forEach(function(StarterIdx){
+//     cells[StarterIdx].classList.add('piece','preview',`${type}`)
+//   })
+// }
 
 // ! Executions
 
