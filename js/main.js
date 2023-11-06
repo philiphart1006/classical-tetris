@@ -475,16 +475,47 @@ function arrowRightFn(){
 // Triggered by up key event
 // Needs to check a) which piece b) how much space the piece has
 // Accordingly, will do some fun maths manipulations to each of the 4 piece's currentPosition index. Yay.
+// Array that stores the possible differences between a piece's index and its tetramino's axis piece's index
+const rotationOriginArray = [-3,(-width-2),-2,(-width-1),-1,(width-1),(2*width-1),(-3*width),(-2*width),(-width),0,(width),(2*width),(3*width),(-2*width+1),(-width+1),1,(width+1),2,width+2,3]
+console.log('Rotation origin array: ',rotationOriginArray)
+// Based on the rotationOriging, what transformation needs to happen to the current piece's index when rotating?
+const rotationMoveArray = [(-3*width-3),(-width+3),((-2*width)+2),2,(-width+1),(-2*width),(-3*width-1),(3*width+3),((2*width)+2),(width+1),0,(-width-1),((-2*width)-2),(-3*width-3),(3*width+1),(2*width),(width-1),-2,((2*width)-2),(-width-3),(3*width-3)]
+console.log('Rotation move array: ',rotationMoveArray)
+
 function rotateFn(){
   console.log('ROTATE FUNCTION EXECUTING')
   // Fetch activeTetNL again
   //Log type of activeTetNL
 // Find index of axis cell
 activeTetNL = document.querySelectorAll('.moving')
-console.log(activeTetNL)
+// console.log(activeTetNL)
 const axisCell = document.querySelector('.moving.axis')
 console.log(axisCell)
 const axisIdx = parseInt(axisCell.id )
+console.log('Axis Index: ', axisIdx)
+// Iterate over each cell within
+// For each cell within, find cellIdx - aIdx & use the rotation arrays to determine the change in index required
+activeTetNL.forEach(function(cell){
+  let idxDif = parseInt(cell.id) - axisIdx
+  console.log('Index dif: ', idxDif)
+  // console.log(typeof(idxDif))
+  const isEqual = (number) => number === idxDif
+  const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
+  console.log('Rotation origin array index: ',rotationOriginArrayIdx)
+  const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+  console.log('Rotation move required: ', rotationMoveReqd)
+  // Find type of current cell //! Here is where I'm currently working
+  cell.classList.remove('moving','piece')
+      cellClassArray = Array.from(cell.classList)
+      const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+        return className.includes('type')
+      })
+      type = cellClassArrayFiltered.toString()
+  // Remove moving classes from old cell
+  cell.classList.remove('moving','piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+  const newCellId = parseInt(cell.id) + rotationMoveReqd
+  dropCells[newCellId].classList.add('piece','moving',`${type}`)
+})
 }
 
 // * Game over functions [2]
