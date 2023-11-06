@@ -73,8 +73,9 @@ function createMainGrid() {
     cell.innerText = i
     cell.id = i
     cell.style.height = `${100 / (2 * width + 4)}%`
-    cell.style.margin = 0
-    cell.style.aspectRatio = 1
+    cell.classList.add('dropCell')
+    // cell.style.margin = 0
+    // cell.style.aspectRatio = 1
     dropGridEl.append(cell)
     dropCells.push(cell)
     if (i < 4 * width) {
@@ -261,10 +262,15 @@ function activateHoldingFn (){
   })
 }
 
-// Drop tetromino at constant rate with SetInterval that updates the cell indices by (width); select cells with classes: .piece .active
-
+// ! Key movement function below
+// Land piece
+// When any piece of the tetromino would reaches a grid cell above a currently populated grid cell, the whole tetromino should stop
+// Check class at position = piece’s position’s index + width; if any of them are equal to staticPiece, change class to staticPiece & change the target of the dropping interval to next piece
+// This should trigger the next piece to start dropping by changing its class from holding to moving
 function moveDownFn(){
   console.log('MOVE DOWN FUNCTION EXECUTED')
+  score += 1
+  scoreEl.innerText = score
   let pieceAtBottom = false
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
@@ -305,9 +311,9 @@ function moveDownFn(){
   holdingBayEmptyFn()
 }
 
-// * Code to pull from (originally written for game over function; recycling for holding bay empty)
+// * This checks if the holding bay is empty and generates a new random tetromino if so
 function holdingBayEmptyFn(){
-  console.log('HOLDING BAY CHECK FUNCTION')
+  // console.log('HOLDING BAY CHECK FUNCTION')
   const holdingBayNL = document.querySelector('.holdingGrid.piece')
   // console.log('HOLDING NODE LIST: ', holdingBayNL)
   // console.log('Boolean of holdingBayNL: ', !holdingBayNL)
@@ -315,8 +321,9 @@ function holdingBayEmptyFn(){
     createRandomPiece()
   }
 }
-// * Down to here
 
+// * This gives the game automated movement
+// Drop tetromino at constant rate with SetInterval that updates the cell indices by (width); select cells with classes: .piece .active
 function autoMoveDownFn(){
   clearInterval
   interval = setInterval(() => {
@@ -327,11 +334,6 @@ function autoMoveDownFn(){
     }
   }, timeInterval)
 }
-
-// Land piece
-// When any piece of the tetromino would reaches a grid cell above a currently populated grid cell, the whole tetromino should stop
-// Check class at position = piece’s position’s index + width; if any of them are equal to staticPiece, change class to staticPiece & change the target of the dropping interval to next piece
-// This should trigger the next piece to start dropping by changing its class from holding to moving
 
 
 //* User interactions - translate
@@ -357,7 +359,6 @@ function arrowDownFn(){
   console.log('ARROW DOWN FUNCTION EXECUTED')
   moveDownFn()
 }
-
 
 //* For left and right, need to add in if filters that check if there are landed pieces next to the active piece
 function arrowLeftFn(){
@@ -410,19 +411,19 @@ function arrowRightFn(){
   }
 }
 
-
 //* User interactions - rotate
 // Triggered by up key event
 // Needs to check a) which piece b) how much space the piece has
 // Accordingly, will do some fun maths manipulations to each of the 4 piece's currentPosition index. Yay.
+function rotateFn(){
 
-//*Game over
+}
+
+// * Game over functions [2]
 //When a piece is switched to 'landed' but is within the first 4 * width indices still, this will trigger a game over function that stops gameplay
 //Set new highscore if score > highscore; updates highScore span
 //Clears all intervals
 // Removes the hidden attribute from start button
-
-// * Game over functions
 function gameOverCheckFn(){
   console.log('GAME OVER CHECK FUNCTION')
   gameOverNL = document.querySelector('.holdingGrid.landed')
@@ -450,29 +451,42 @@ function gameOverFn() {
   })
 }
 
-
-// * Complete line
+// * Complete line functions [3]
+// ! This needs fixing; currently, keeps triggering for a row even once it's been removed
 function completeLineCheckFn() {
   // Iterate over rows; within this, iterate over cells
   for (let row = 4; row < 24; row++){
-    // console.log(`Iterating over row ${row}`)
+    console.log(`Iterating over row ${row}`)
     let landedCells = 0
+    // This runs width times for each row
     for (let cell = row * width; cell < (row + 1) * width; cell++){
       // console.log('Current value & typeof cell: ', cell, typeof(cell))
       // console.log('Current dropCells cell being iterated over: ', dropCells[cell])
       dropCells[cell].classList.contains('landed') ? landedCells += 1 : landedCells
-      // console.log('Landed cells count: ', landedCells)
+      console.log('Landed cells count: ', landedCells)
     }
     //! Change this below to completed = 3 while testing
     // if (landedCells === width){
     if (landedCells >= 3){
+      console.log('Complete line function about to be executed')
+      console.log('Landed cells total/row: ',landedCells,' row: ',row)
       completeLineFn(row)
+      landedCells = 0
+      console.log('Landed cells after reset: ',landedCells)
     }
   }
 }
 
-//Remove complete line
+// * Remove complete line and add empty row to top
+// Remove current line
+// Move all landedPieces with lower indices values along by width number of spaces (= down one row)
+// Increase score by 1 & update score span
+// If score % 10 = 0, increase level by 1, update level span, & decrease timeInterval by 10%?
 function completeLineFn(row){
+  console.log('Complete line function running for row: ', row)
+  score += width
+  scoreEl.innerText = score
+  // Remove completed row
   for (let cell = row * width; cell < (row + 1) * width; cell++){
     dropCells[cell].remove()
   }
@@ -482,23 +496,26 @@ function completeLineFn(row){
     dropCells[cellToShift].id = idToShift + width
     dropCells[cellToShift].innerText = (cellToShift + width)
   }
-  //Add width cells after index 4*width-1; need to create 5 div elements
-  // ! This needs fixing
+  //Create and add width cells before index 5*width
+  addLineFn()
+}
+
+function addLineFn(){
   for (let cellToAdd = 4 * width; cellToAdd < 5 * width; cellToAdd ++) {
     const newCell = document.createElement('div')
     newCell.innerText = cellToAdd
     newCell.id = cellToAdd
-    console.log('New cell: ', newCell)
-    console.log('Drop cells: ', dropCells)
-    const currentCell = dropCells[parseInt(cellToAdd)]
-    console.log('Current cell to insert before: ', currentCell)
+    // newCell.classList.add('newCell')
+    newCell.style.height = `${100 / (2 * width + 4)}%`
+    newCell.classList.add('dropCell')
+    // console.log('New cell: ', newCell)
+    // console.log('Drop cells: ', dropCells)
+    const currentCell = dropCells[4 * width]
+    // console.log('Current cell to insert before: ', currentCell)
     dropGridEl.insertBefore(newCell, currentCell)
   }
 }
-// Remove current line
-// Move all landedPieces with lower indices values along by width number of spaces (= down one row)
-// Increase score by 1 & update score span
-// If score % 10 = 0, increase level by 1, update level span, & decrease timeInterval by 10%?
+
 
 // * Sidebar updates N/A
 // These actions will be triggered within other functions
