@@ -2,7 +2,7 @@
     /* height & width now includes border & padding */
     box-sizing: border-box;
     text-align: center;
-    font-size: 16px
+    font-size: 16px;
   }
 
   body {
@@ -15,11 +15,11 @@
   }
 
   section {
-    background-color: aquamarine;
+    background-color: rgb(157, 157, 157);
   }
 
   section.welcome{
-    background-color: peachpuff;
+    background-color: #a5a5a5a4;
     padding: 1em
   }
 
@@ -27,7 +27,7 @@
     height: 100%;
     /* Update to 0.5 when holdingGrid is hidden */
     aspect-ratio: 10 / 24;
-    background-color: darkgrey;
+    background-color: black;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -37,10 +37,11 @@
   .dropCell {
     margin: 0;
     aspect-ratio: 1;
+    color: rgb(70, 70, 70)
   }
 
   .sidebar {
-    background-color: bisque;
+    background-color: darkgray;
     height: 100%;
     width: 50%;
     max-width: 350px;
@@ -80,7 +81,7 @@
   div {
     border: solid;
     border-width: 1px;
-    border-color: darkgray
+    border-color: rgb(43, 43, 43)
   }
 
   .logo {

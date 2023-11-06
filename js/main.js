@@ -151,7 +151,10 @@ function setPieceStraight(cells) {
 
 function createPiece(cells){
   Starters.forEach(function(StarterIdx){
-    if (cells === dropCells){cells[StarterIdx].classList.add('piece','hold',`${type}`)
+    if (cells === dropCells){cells[StarterIdx].classList.add('piece',`${type}`,'hold')
+    if (StarterIdx = (width * 3.5 - 1)) { 
+      cells[StarterIdx].classList.add('axis')
+    } 
   } else {cells[StarterIdx].classList.add('piece','preview',`${type}`)
 }
   })
@@ -173,7 +176,7 @@ function keyupFunctions(evt){
   if (key === 'Enter'){
     startGame()
   } else if (key === 'ArrowUp'){
-    arrowUpFn()
+    rotateFn()
     // Add in some tester keyboard actions for testing functions by pressing f
   } else if (key === 'KeyF'){
     // Put function to test in here
@@ -208,6 +211,10 @@ function keyupFunctions(evt){
   } else if (key === 'KeyS'){
     // Put function to test in here
     completeLineFn()
+  } else if (key === 'ArrowLeft'){
+    arrowLeftFn()
+  } else if (key === 'ArrowRight'){
+    arrowRightFn()
   }
 }
 
@@ -217,17 +224,18 @@ function keydownFunctions(evt){
   const key = evt.code
   if (key === 'ArrowDown'){
     arrowDownFn()
-  } else if (key === 'ArrowLeft'){
-    arrowLeftFn()
-  } else if (key === 'ArrowRight'){
-    arrowRightFn()
+  // } else if (key === 'ArrowLeft'){
+  //   arrowLeftFn()
+  // } else if (key === 'ArrowRight'){
+  //   arrowRightFn()
   }
 }
 
-//* Start game
+//! Start game
 // Generates preview and main grids by executing these functions
 function startGame () {
   hideWelcome()
+  dropGridEl.innerHTML = ''
   createMainGrid()
   startVariables()
   console.log('GAME STARTED')
@@ -298,18 +306,37 @@ function moveDownFn(){
     }
   })
   if (pieceAtBottom === false) {
-    let type
+    let type = 'typeStraight'
+    let axisIndex
     activeTetNL = document.querySelectorAll('.moving') // Not sure this line is doing anything
     activeTetNL.forEach(function(cell){
       cell.classList.remove('moving','piece')
-      type = cell.classList[cell.classList.length - 1]
-      cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+      // type = cell.classList[cell.classList.length - 1]
+      // Extract type of current cell and store in type variable
+      // console.log("Cell class list: ", cell.classList)
+      cellClassArray = Array.from(cell.classList)
+      const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+        return className.includes('type')
+      })
+      type = cellClassArrayFiltered.toString()
+      // console.log(cellClassArrayFiltered)
+      // console.log(type)
+      // If classlist contains axis, saves this index - 1 as a variable
+      if (cell.classList.contains('axis')){
+        console.log('FOUND AN AXIS PIECE AT')
+        axisIndex = (parseInt(cell.id) + width)
+        console.log(axisIndex)
+      }
+      cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL','axis')
     })
     activeTetNL.forEach(function(cell){
       const newCellId = parseInt(cell.id) + width
       dropCells[newCellId]?.classList.add('piece','moving',`${type}`)
     // dropCells[cell.id + width].classList.add('active','piece','typeSquare')
     })
+    // console.log(axisIndex)
+    // console.log(dropCells[axisIndex])
+    dropCells[axisIndex].classList.add('axis')
   } else {
     activeTetNL = document.querySelectorAll('.moving') // Not sure this line is doing anything
     activeTetNL.forEach(function(cell){
@@ -347,7 +374,6 @@ function autoMoveDownFn(){
   }, timeInterval)
 }
 
-
 //* User interactions - translate
 // moveLeft: Triggered by eventlisteners; checks that positionPiecez-c + 1 % width !== 0 → increases positionPiecez-c by one
 // moveRight: checks that positionPiece1-4 % width !== 0 → increases positionPiecec-z- by one
@@ -376,6 +402,8 @@ function arrowDownFn(){
 function arrowLeftFn(){
   console.log('ARROW LEFT FUNCTION EXECUTED')
   let pieceAtLeft = false
+  let axisIndex
+  let type = 'typeStraight' //! This needs fixing
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
     // Use or operator to check  piece is either at edge of grid or cell to right has a piece in already
@@ -385,22 +413,34 @@ function arrowLeftFn(){
   })
   console.log('Piece at left: ', pieceAtLeft)
   if (pieceAtLeft === false){
-    let type
     activeTetNL.forEach(function(cell){
       cell.classList.remove('moving','piece')
-      type = cell.classList[cell.classList.length - 1]
-      cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+      cellClassArray = Array.from(cell.classList)
+      const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+        return className.includes('type')
+      })
+      type = cellClassArrayFiltered.toString()
+      // If classlist contains axis, save this index - 1 as a variable
+      if (cell.classList.contains('axis')){
+        console.log('FOUND AN AXIS PIECE at id:')
+        axisIndex = parseInt(cell.id) - 1
+      }
+      cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL','axis')
     })
     activeTetNL.forEach(function(cell){
       const newCellId = parseInt(cell.id) - 1
       dropCells[newCellId].classList.add('piece','moving',`${type}`)
     })
+    console.log('Axis index: ', axisIndex)
   }
+  dropCells[axisIndex].classList.add('axis')
 }
 
 function arrowRightFn(){
   console.log('ARROW RIGHT FUNCTION EXECUTED')
   let pieceAtRight = false
+  let axisIndex
+  let type = 'typeStraight' //! This needs fixing
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
     if ((parseInt(cell.id) + 1) % width === 0 || dropCells[(parseInt(cell.id) + 1)].classList.contains('landed')) {
@@ -410,17 +450,25 @@ function arrowRightFn(){
   })
   console.log('Piece at right: ', pieceAtRight)
   if (pieceAtRight === false){
-    let type
     activeTetNL.forEach(function(cell){
       cell.classList.remove('moving','piece')
-      type = cell.classList[cell.classList.length - 1]
-      cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+      cellClassArray = Array.from(cell.classList)
+      const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+        return className.includes('type')
+      })
+      type = cellClassArrayFiltered.toString()
+      // If classList contains axis, save this index + 1 as a variable
+      if (cell.classList.contains('axis')) {
+        axisIndex = parseInt(cell.id) + 1
+      }
+      cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL','axis')
     })
     activeTetNL.forEach(function(cell){
       const newCellId = parseInt(cell.id) + 1
       dropCells[newCellId].classList.add('piece','moving',`${type}`)
     })
   }
+  dropCells[axisIndex].classList.add('axis')
 }
 
 //* User interactions - rotate
@@ -428,7 +476,15 @@ function arrowRightFn(){
 // Needs to check a) which piece b) how much space the piece has
 // Accordingly, will do some fun maths manipulations to each of the 4 piece's currentPosition index. Yay.
 function rotateFn(){
-
+  console.log('ROTATE FUNCTION EXECUTING')
+  // Fetch activeTetNL again
+  //Log type of activeTetNL
+// Find index of axis cell
+activeTetNL = document.querySelectorAll('.moving')
+console.log(activeTetNL)
+const axisCell = document.querySelector('.moving.axis')
+console.log(axisCell)
+const axisIdx = parseInt(axisCell.id )
 }
 
 // * Game over functions [2]
@@ -437,10 +493,10 @@ function rotateFn(){
 //Clears all intervals
 // Removes the hidden attribute from start button
 function gameOverCheckFn(){
-  console.log('GAME OVER CHECK FUNCTION')
+  // console.log('GAME OVER CHECK FUNCTION')
   gameOverNL = document.querySelector('.holdingGrid.landed')
-  console.log('GAME OVER NODE LIST: ', gameOverNL)
-  console.log('Boolean of gameoverNL: ', !gameOverNL)
+  // console.log('GAME OVER NODE LIST: ', gameOverNL)
+  // console.log('Boolean of gameoverNL: ', !gameOverNL)
   if (gameOverNL) {
     gameOverFn()
   }
@@ -458,6 +514,7 @@ function gameOverFn() {
   console.log('Start Button element: ', startButton)
   startButton.addEventListener('click',startGame)
   dropCells = []
+  dropGridEl = document.querySelector('.dropGrid') // New Code
   welcomeNL.forEach(function(element){
     element.setAttribute('hidden', false)
   })
@@ -468,7 +525,7 @@ function gameOverFn() {
 function completeLineCheckFn() {
   // Iterate over rows; within this, iterate over cells
   for (let row = 4; row < (2 * width + 4); row++){
-    console.log(`Iterating over row ${row}`)
+    // console.log(`Iterating over row ${row}`)
     let landedCells = 0
     // This runs width times for each row
     for (let cell = row * width; cell < (row + 1) * width; cell++){
@@ -476,16 +533,16 @@ function completeLineCheckFn() {
       // console.log('Current dropCells cell being iterated over: ', dropCells[cell])
       // Can replace ternary below with a &&
       dropCells[cell].classList?.contains('landed') ? landedCells += 1 : landedCells
-      console.log('Landed cells count: ', landedCells)
+      // console.log('Landed cells count: ', landedCells)
     }
     //! Change this below to completed = 3 while testing
-    // if (landedCells === width){
-    if (landedCells >= 3){
-      console.log('Complete line function about to be executed')
-      console.log('Landed cells total/row: ',landedCells,' row: ',row)
+    if (landedCells === width){
+    // if (landedCells >= 3){
+      // console.log('Complete line function about to be executed')
+      // console.log('Landed cells total/row: ',landedCells,' row: ',row)
       completeLineFn(row)
       landedCells = 0
-      console.log('Landed cells after reset: ',landedCells)
+      // console.log('Landed cells after reset: ',landedCells)
     }
   }
 }
@@ -548,8 +605,8 @@ startButton.addEventListener('click',startGame)
 //Arrow up for rotate function
 // Spacebar (for hard drop)
 // * Add in some test keys to test functions as they're being coded
-document.addEventListener('keyup', keyupFunctions)
-document.addEventListener('keydown', keydownFunctions)
+window.addEventListener('keyup', keyupFunctions)
+window.addEventListener('keydown', keydownFunctions)
 
 
 // ! Page Load
