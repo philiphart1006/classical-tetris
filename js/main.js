@@ -25,7 +25,7 @@ const levelEl = document.querySelector('#levelId')
 // Create empty node lists for preview, moving, & hold tetraminoes
 let holdTetNL = []
 let activeTetNL = []
-let landedTetsNL = []
+// let landedTetsNL = []
 // This will be a node list of cells that are both landed and hold
 let gameOverNL = []
 
@@ -100,6 +100,7 @@ function createRandomPiece(){
   console.log('shape: ', shape)
   const fnToRun = `setPiece${shape}`
   eval(fnToRun + '(dropCells)')
+  // eval(fnToRun + '(previewCells)')
 } 
 //Square (F)
 function setPieceSquare(cells) {
@@ -280,7 +281,7 @@ function moveDownFn(){
     if (parseInt(cell.id) >= cellCount - width){
       console.log('Piece is at bottom')
       pieceAtBottom = true
-    } else if (dropCells[newCellId].classList.contains('landed') === true){
+    } else if (dropCells[newCellId]?.classList.contains('landed')){
       console.log('BOOLEAN VALUE OF WHETHER CELL BELOW CONTAINS A LANDED SQUARE: ', dropCells[newCellId].classList.contains('landed'))
       pieceAtBottom = true
     }
@@ -295,7 +296,7 @@ function moveDownFn(){
     })
     activeTetNL.forEach(function(cell){
       const newCellId = parseInt(cell.id) + width
-      dropCells[newCellId].classList.add('piece','moving',`${type}`)
+      dropCells[newCellId]?.classList.add('piece','moving',`${type}`)
     // dropCells[cell.id + width].classList.add('active','piece','typeSquare')
     })
   } else {
@@ -455,14 +456,15 @@ function gameOverFn() {
 // ! This needs fixing; currently, keeps triggering for a row even once it's been removed
 function completeLineCheckFn() {
   // Iterate over rows; within this, iterate over cells
-  for (let row = 4; row < 24; row++){
+  for (let row = 4; row < (2 * width + 4); row++){
     console.log(`Iterating over row ${row}`)
     let landedCells = 0
     // This runs width times for each row
     for (let cell = row * width; cell < (row + 1) * width; cell++){
       // console.log('Current value & typeof cell: ', cell, typeof(cell))
       // console.log('Current dropCells cell being iterated over: ', dropCells[cell])
-      dropCells[cell].classList.contains('landed') ? landedCells += 1 : landedCells
+      // Can replace ternary below with a &&
+      dropCells[cell].classList?.contains('landed') ? landedCells += 1 : landedCells
       console.log('Landed cells count: ', landedCells)
     }
     //! Change this below to completed = 3 while testing
@@ -488,17 +490,23 @@ function completeLineFn(row){
   scoreEl.innerText = score
   // Remove completed row
   for (let cell = row * width; cell < (row + 1) * width; cell++){
+    dropCells[cell].className = ''
     dropCells[cell].remove()
   }
+  // const landedCellsRemaining = dropCells.reduce((acc, cell) => cell.classList.contains('landed') ? acc + 1 : acc, 0)
+  // console.log('Landed cells remaining: ', landedCellsRemaining)
   // Shift cells above down a row --> Starting from cell 4*width & ending at row just deleted, increase the ID and contents of each cell by width)
   for (let cellToShift = 4 * width; cellToShift < row * width; cellToShift++ ){
     const idToShift = parseInt(dropCells[cellToShift].id)
     dropCells[cellToShift].id = idToShift + width
     dropCells[cellToShift].innerText = (cellToShift + width)
   }
+  dropCells = document.querySelectorAll('.dropCell')
   //Create and add width cells before index 5*width
   addLineFn()
 }
+// ! Find index of cell in dropCells first rather than using id
+// ! Go from bottom of shifting section and move classes of row above down to that cell
 
 function addLineFn(){
   for (let cellToAdd = 4 * width; cellToAdd < 5 * width; cellToAdd ++) {
@@ -514,6 +522,8 @@ function addLineFn(){
     // console.log('Current cell to insert before: ', currentCell)
     dropGridEl.insertBefore(newCell, currentCell)
   }
+  dropCells = document.querySelectorAll('.dropCell')
+  console.log(dropCells)
 }
 
 

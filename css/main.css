@@ -103,6 +103,10 @@
     /* display: none */
   }
 
+  .landed {
+    color: red
+  }
+
   /* Assignable classes for pieces: */
   .Piece {
 
