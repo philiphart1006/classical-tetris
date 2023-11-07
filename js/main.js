@@ -4,16 +4,19 @@
 // H -> create reverse L piece
 // Z -> start automovedown
 // X -> convert holding piece to active
-// S -> complete line function
+// S -> store
 // P -> pause/un-pause
 
 // ! Test logging
 
+// ! Switching between classic and classical modes
+let mode = 'classic'
 
 // ! Elements
 // Get DOM elements for main grid, preview grid, start button
 const dropGridEl = document.querySelector('.dropGrid')
 const previewGridEl = document.querySelector('.previewGrid')
+const storeGridEl = document.querySelector('.storeGrid')
 let startButton = document.querySelector('.start')
 
 // Welcome elements that will be hidden on game start
@@ -37,6 +40,7 @@ highScoreEl.textContent = highScore
 // ! Variables
 // Starting values on page load; make available as global variables
 const previewCells = []
+const storeCells = []
 let dropCells = []
 const width = 10
 let score = 0
@@ -54,7 +58,7 @@ const previewWidth = 4
 const previewCellCount = previewWidth * previewWidth
 
 //Function to create grid cells & append to existing grid
-function createPreviewGrid(){
+function createPreviewGrid(grid, cellsArray){
   for (let i = 0; i < previewCellCount; i++) {
     const cell = document.createElement('div')
     cell.innerText = i
@@ -63,8 +67,8 @@ function createPreviewGrid(){
     cell.style.margin = 0
     cell.style.borderWidth = 1
     cell.style.aspectRatio = 1
-    previewGridEl.append(cell)
-    previewCells.push(cell)
+    grid.append(cell)
+    cellsArray.push(cell)
   }
 }
 
@@ -188,6 +192,8 @@ function keyupFunctions(evt){
     muteMusicFn()
   } else if (key === 'KeyM' && musicMuted){
     unMuteMusicFn()
+  } else if (key === 'KeyS'){
+    storePieceFn()
   }
 }
 
@@ -206,6 +212,16 @@ function keydownFunctions(evt){
 
 //! Start game
 // Generates preview and main grids by executing these functions
+
+function startGameClassic() {
+  startGame()
+}
+
+function startGameClassical() {
+  mode = 'classical'
+  startGame()
+}
+
 function startGame () {
   hideWelcome()
   dropGridEl.innerHTML = ''
@@ -481,7 +497,6 @@ function pauseGameFn(){
   window.addEventListener('keyup', keyupFunctions)
   window.addEventListener('keydown', keydownFunctions)
 }
-
 function unPauseGameFn(){
   console.log('Executing unpause game function')
   const Sound = document.querySelector('#typeAMusic')
@@ -501,6 +516,35 @@ function unMuteMusicFn(){
   const Sound = document.querySelector('#typeAMusic')
   Sound.play()
   musicMuted = false
+}
+
+function storePieceFn(){
+  // Deduce type of active piece
+  console.log("STORE PIECE FUNCTION ACTIVATING")
+  let type
+  activeTetNL = document.querySelectorAll('.moving')
+  activeTetNL.forEach(function(cell){
+    // Save type of piece/tetramino
+    cellClassArray = Array.from(cell.classList)
+        const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+          return className.includes('type')
+        })
+        type = cellClassArrayFiltered.toString()
+        console.log(type)
+  })
+  const shape = type.slice(4)
+  const fnToRun = `setPiece${shape}`
+  storeCells.forEach(function(cell){
+  cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+  })
+  eval(fnToRun + '(storeCells)')
+  activeTetNL.forEach(function(cell){
+    cell.classList.remove('piece','moving','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+  })
+  activateHoldingFn()
+  // Re-create current piece in storeGrid with .storeCells class
+  // Remove active piece classes from drop grid
+  // Activate next piece in holding
 }
 
 //! User interactions - rotate
@@ -594,7 +638,6 @@ function gameOverCheckFn(){
     gameOverFn()
   }
 }
-
 function gameOverFn() {
   if (score > highScore || !highScore){
     highScore = score
@@ -643,7 +686,6 @@ function completeLineCheckFn() {
     }
   }
 }
-
 // * Remove complete line and add empty row to top
 // Remove current line
 // Move all landedPieces with lower indices values along by width number of spaces (= down one row)
@@ -680,7 +722,6 @@ function completeLineFn(row){
 }
 // ! Find index of cell in dropCells first rather than using id
 // ! Go from bottom of shifting section and move classes of row above down to that cell
-
 function addLineFn(){
   for (let cellToAdd = 4 * width; cellToAdd < 5 * width; cellToAdd ++) {
     const newCell = document.createElement('div')
@@ -705,7 +746,8 @@ function addLineFn(){
 
 // ! Events
 // Clicking start button; this should also re-set the game
-startButton.addEventListener('click',startGame)
+startButton.addEventListener('click',startGameClassic)
+startButton.addEventListener('click',startGameClassical)
 //Arrow down, left, right as keydown listeners that trigger appropriate moveX function above
 //Arrow up for rotate function
 // Spacebar (for hard drop)
@@ -744,4 +786,5 @@ if (!musicMuted) {
 // ! Page Load
 // Wait until start button is pressed to generate main grid
 // This could trigger the preview grid
-window.addEventListener('DOMContentLoaded', createPreviewGrid)
+window.addEventListener('DOMContentLoaded', createPreviewGrid(previewGridEl, previewCells))
+window.addEventListener('DOMContentLoaded', createPreviewGrid(storeGridEl, storeCells))
