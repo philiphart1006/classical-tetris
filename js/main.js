@@ -46,7 +46,7 @@ let timeInterval = 1000
 const starterSquare = width * 3.5 - 1
 let gameOver = false
 let gamePaused = false
-let musicMuted = false
+let musicMuted = true
 
 // ! Preview Grid
 // Create a preview grid that is 4x4 to display upcoming tetromino
@@ -177,7 +177,7 @@ function keyupFunctions(evt){
   } else if (key === 'ArrowUp'){
     rotateFn(rotationMoveArray)
   } else if (key === 'ShiftRight'){
-    rotateFn(rotationMoveArray)
+    rotateFn(rotationMoveAntiArray)
   } else if (key === 'Space'){
     hardDropFn()
   } else if (key === 'KeyP' && !gamePaused) {
@@ -216,7 +216,9 @@ function startGame () {
   activateHoldingFn()
   autoMoveDownFn()
   const Sound = document.querySelector('#typeAMusic')
-  Sound.play()
+  if (!musicMuted){
+    Sound.play()
+  }
 }
 //Game setup functions
 // Hides welcome class elements by adding hidden attribute to welcome class node list
@@ -263,6 +265,7 @@ function activateHoldingFn (){
 // Check class at position = piece’s position’s index + width; if any of them are equal to staticPiece, change class to staticPiece & change the target of the dropping interval to next piece
 // This should trigger the next piece to start dropping by changing its class from holding to moving
 function moveDownFn(){
+  if (!gamePaused){
   console.log('MOVE DOWN FUNCTION EXECUTED')
   score += 1
   scoreEl.innerText = score
@@ -327,6 +330,7 @@ function moveDownFn(){
   gameOverCheckFn()
   holdingBayEmptyFn()
 }
+}
 
 // * This checks if the holding bay is empty and generates a new random tetromino if so
 function holdingBayEmptyFn(){
@@ -360,6 +364,7 @@ function autoMoveDownFn(){
 
 // Before working on rotate, allow arrow up to move the piece up
 function arrowUpFn(){
+  if (!gamePaused){
   console.log('ARROW UP FUNCTION EXECUTED')
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
@@ -370,6 +375,7 @@ function arrowUpFn(){
     dropCells[newCellId].classList.add('piece','moving',`${type}`)
   })
 }
+}
 
 function arrowDownFn(){
   // console.log('ARROW DOWN FUNCTION EXECUTED')
@@ -378,6 +384,7 @@ function arrowDownFn(){
 
 //* For left and right, need to add in if filters that check if there are landed pieces next to the active piece
 function arrowLeftFn(){
+  if (!gamePaused){
   console.log('ARROW LEFT FUNCTION EXECUTED')
   let pieceAtLeft = false
   let axisIndex
@@ -413,8 +420,10 @@ function arrowLeftFn(){
   }
   dropCells[axisIndex]?.classList.add('axis')
 }
+}
 
 function arrowRightFn(){
+  if (!gamePaused){
   console.log('ARROW RIGHT FUNCTION EXECUTED')
   let pieceAtRight = false
   let axisIndex
@@ -448,16 +457,18 @@ function arrowRightFn(){
   }
   dropCells[axisIndex]?.classList.add('axis')
 }
+}
 
 //! Enhancements
 function hardDropFn(){
+  if (!gamePaused){
   console.log('HARD DROP FUNCTION ACTIVATED')
   clearInterval(interval)
   console.log('Time interval at start of hard drop function: ', timeInterval)
   timeInterval = 1
   autoMoveDownFn()
   console.log('Time interval at end of hard drop function: ', timeInterval)
-  
+  }
 }
 
 function pauseGameFn(){
@@ -474,7 +485,9 @@ function pauseGameFn(){
 function unPauseGameFn(){
   console.log('Executing unpause game function')
   const Sound = document.querySelector('#typeAMusic')
-  Sound.play()
+  if (!musicMuted) {
+    Sound.play()
+  }
   gamePaused = false
   autoMoveDownFn()
 }
@@ -501,9 +514,10 @@ console.log('Rotation origin array: ',rotationOriginArray)
 const rotationMoveArray = [(-3*width+3),(-width+3),((-2*width)+2),2,(-width+1),(-2*width),(-3*width-1),(3*width+3),((2*width)+2),(width+1),0,(-width-1),((-2*width)-2),(-3*width-3),(3*width+1),(2*width),(width-1),-2,((2*width)-2),(-width-3),(3*width-3)]
 console.log('Rotation move array: ',rotationMoveArray)
 // Anticlockwise transformations:
-const rotationMoveAntiArray = [(3*width+3),(3*width+1),(2*width+2),(2*width),(width+1),(2),(-width+3),(3*width-3),(2*width-2),(width-1),(0),(-width+1),(-2*width+2),(-3*width+3),(width-3),(-2),(-width-1),(-2*width-1),(-2*width-2),(-3*width-1),(-3*width-3),]
+const rotationMoveAntiArray = [(3*width+3),(3*width+1),(2*width+2),(2*width),(width+1),(2),(-width+3),(3*width-3),(2*width-2),(width-1),(0),(-width+1),(-2*width+2),(-3*width+3),(width-3),(-2),(-width-1),(-2*width),(-2*width-2),(-3*width-1),(-3*width-3),]
 
 function rotateFn(rotationArray){
+  if (!gamePaused){
   console.log('ROTATE FUNCTION EXECUTING')
   let type
   let pieceAtEdge = false
@@ -563,6 +577,7 @@ function rotateFn(rotationArray){
       })
     }
   }
+}
 }
 
 // * Game over functions [2]
@@ -636,6 +651,9 @@ function completeLineCheckFn() {
 // If score % 10 = 0, increase level by 1, update level span, & decrease timeInterval by 10%?
 function completeLineFn(row){
   console.log('Complete line function running for row: ', row)
+  const Sound = document.querySelector('#successSound')
+  Sound.play()
+
   score += width
   scoreEl.innerText = score
   // Set level based on score
