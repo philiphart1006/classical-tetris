@@ -5,6 +5,7 @@
 // Z -> start automovedown
 // X -> convert holding piece to active
 // S -> complete line function
+// P -> pause/un-pause
 
 // ! Test logging
 
@@ -27,6 +28,11 @@ let holdTetNL = []
 let activeTetNL = []
 let gameOverNL = []
 
+// Get High SCore from local
+let highScore = localStorage.getItem('tetrisHighScore')
+console.log('RETRIEVED HIGH SCORE: ', highScore)
+highScoreEl.textContent = highScore
+
 // ! Variables
 // Starting values on page load; make available as global variables
 const previewCells = []
@@ -34,11 +40,11 @@ let dropCells = []
 const width = 10
 let score = 0
 let interval = 0
-let highScore = 0
 let level = 1
-const timeInterval = 1000
+let timeInterval = 1000
 const starterSquare = width * 3.5 - 1
 let gameOver = false
+let gamePaused = false
 
 // ! Preview Grid
 // Create a preview grid that is 4x4 to display upcoming tetromino
@@ -70,7 +76,7 @@ function createMainGrid() {
     const cell = document.createElement('div')
     cell.innerText = i
     cell.id = i
-    cell.style.height = `${100 / (2 * width + 4)}%`
+    cell.style.height = `${100 / (2 * width)}%`
     cell.classList.add('dropCell')
     // cell.style.margin = 0
     // cell.style.aspectRatio = 1
@@ -135,7 +141,7 @@ function setPieceReverseZ(cells) {
 }
 //T (L)
 function setPieceT(cells) {
-  cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - 1)] : Starters = [12, 9, 10, 14]
+  cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - 1)] : Starters = [12, 9, 13, 14]
   type = 'typeT'
   createPiece(cells)
 }
@@ -206,6 +212,12 @@ function keyupFunctions(evt){
   //   arrowLeftFn()
   // } else if (key === 'ArrowRight'){
   //   arrowRightFn()
+  } else if (key === 'Space'){
+    hardDropFn()
+  } else if (key === 'KeyP' && !gamePaused) {
+    pauseGameFn()
+  } else if (key === 'KeyP' && gamePaused){
+    unPauseGameFn()
   }
 }
 
@@ -232,7 +244,9 @@ function startGame () {
   console.log('GAME STARTED')
   createRandomPiece()
   activateHoldingFn()
-  // autoMoveDownFn()
+  autoMoveDownFn()
+  const Sound = document.querySelector('#typeAMusic')
+  Sound.play()
 }
 //Game setup functions
 // Hides welcome class elements by adding hidden attribute to welcome class node list
@@ -314,9 +328,9 @@ function moveDownFn(){
       // console.log(type)
       // If classlist contains axis, saves this index - 1 as a variable
       if (cell.classList.contains('axis')){
-        console.log('FOUND AN AXIS PIECE AT')
+        // console.log('FOUND AN AXIS PIECE AT')
         axisIndex = (parseInt(cell.id) + width)
-        console.log(axisIndex)
+        // console.log(axisIndex)
       }
       cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL','axis')
     })
@@ -334,6 +348,9 @@ function moveDownFn(){
       cell.classList.remove('moving')
       cell.classList.add('landed')
     })
+    clearInterval(interval)
+    timeInterval = 1000 * (0.9 ** (level - 1))
+    autoMoveDownFn()
     activateHoldingFn()
   }
   completeLineCheckFn()
@@ -357,7 +374,7 @@ function holdingBayEmptyFn(){
 function autoMoveDownFn(){
   clearInterval
   interval = setInterval(() => {
-    console.log('AUTO MOVE DOWN FUNCTION EXECUTED')
+    console.log('AUTO MOVE DOWN FUNCTION EXECUTED with timeInterval of: ', timeInterval)
     moveDownFn()
     if (gameOver === true){
       clearInterval(interval)
@@ -373,7 +390,7 @@ function autoMoveDownFn(){
 
 // Before working on rotate, allow arrow up to move the piece up
 function arrowUpFn(){
-  console.log('ARROW LEFT FUNCTION EXECUTED')
+  console.log('ARROW UP FUNCTION EXECUTED')
   activeTetNL = document.querySelectorAll('.moving')
   activeTetNL.forEach(function(cell){
     cell.classList.remove('moving','piece')
@@ -385,7 +402,7 @@ function arrowUpFn(){
 }
 
 function arrowDownFn(){
-  console.log('ARROW DOWN FUNCTION EXECUTED')
+  // console.log('ARROW DOWN FUNCTION EXECUTED')
   moveDownFn()
 }
 
@@ -413,7 +430,7 @@ function arrowLeftFn(){
       type = cellClassArrayFiltered.toString()
       // If classlist contains axis, save this index - 1 as a variable
       if (cell.classList.contains('axis')){
-        console.log('FOUND AN AXIS PIECE at id:')
+        // console.log('FOUND AN AXIS PIECE at id:')
         axisIndex = parseInt(cell.id) - 1
       }
       cell.classList.remove('typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL','axis')
@@ -422,9 +439,9 @@ function arrowLeftFn(){
       const newCellId = parseInt(cell.id) - 1
       dropCells[newCellId].classList.add('piece','moving',`${type}`)
     })
-    console.log('Axis index: ', axisIndex)
+    // console.log('Axis index: ', axisIndex)
   }
-  dropCells[axisIndex].classList.add('axis')
+  dropCells[axisIndex]?.classList.add('axis')
 }
 
 function arrowRightFn(){
@@ -459,7 +476,32 @@ function arrowRightFn(){
       dropCells[newCellId].classList.add('piece','moving',`${type}`)
     })
   }
-  dropCells[axisIndex].classList.add('axis')
+  dropCells[axisIndex]?.classList.add('axis')
+}
+
+//! Enhancements
+function hardDropFn(){
+  console.log('HARD DROP FUNCTION ACTIVATED')
+  clearInterval(interval)
+  console.log('Time interval at start of hard drop function: ', timeInterval)
+  timeInterval = 1
+  autoMoveDownFn()
+  console.log('Time interval at end of hard drop function: ', timeInterval)
+  
+}
+
+function pauseGameFn(){
+  const Sound = document.querySelector('#typeAMusic')
+  Sound.pause()
+  gamePaused = true
+  clearInterval(interval)
+}
+
+function unPauseGameFn(){
+  const Sound = document.querySelector('#typeAMusic')
+  Sound.play()
+  gamePaused = false
+  autoMoveDownFn()
 }
 
 //! User interactions - rotate
@@ -472,6 +514,8 @@ console.log('Rotation origin array: ',rotationOriginArray)
 // Based on the rotationOriging, what transformation needs to happen to the current piece's index when rotating?
 const rotationMoveArray = [(-3*width+3),(-width+3),((-2*width)+2),2,(-width+1),(-2*width),(-3*width-1),(3*width+3),((2*width)+2),(width+1),0,(-width-1),((-2*width)-2),(-3*width-3),(3*width+1),(2*width),(width-1),-2,((2*width)-2),(-width-3),(3*width-3)]
 console.log('Rotation move array: ',rotationMoveArray)
+// Anticlockwise transformations:
+const rotationMoveAntiArray = [(3*width+3),(3*width+1),(2*width+2),(2*width),(width+1),(2),(-width+3),(3*width-3),(2*width-2),(width-1),(0),(-width+1),(-2*width+2),(-3*width+3),(width-3),(-2),(-width-1),(-2*width-1),(-2*width-2),(-3*width-1),(-3*width-3),]
 
 function rotateFn(){
   console.log('ROTATE FUNCTION EXECUTING')
@@ -494,7 +538,7 @@ function rotateFn(){
     const newCellId = parseInt(cell.id) + rotationMoveReqd
     const modNewCellId = newCellId % width
     modArray.push(modNewCellId)
-    // Check if new cells contain landed pieces; if so, don't allow rotate function
+    // Check if new cells contain landed pieces; if so, don't allow rotate
     if (dropCells[newCellId].classList.contains('landed')){
       landedPieceAdjacent = true
     }
@@ -516,18 +560,22 @@ function rotateFn(){
         type = cellClassArrayFiltered.toString()
         console.log(type)
     // Remove moving classes from old cell
-    cell.classList.remove('moving','piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+    if (type !== 'typeSquare'){
+      cell.classList.remove('moving','piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+      }
     })
     
     // Determine rotation move required based on relative position of cell to axis cell
-    activeTetNL.forEach(function(cell){
-      let idxDif = parseInt(cell.id) - axisIdx
-      const isEqual = (number) => number === idxDif
-      const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
-      const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
-      const newCellId = parseInt(cell.id) + rotationMoveReqd
-      dropCells[newCellId].classList.add('piece','moving',`${type}`)
-    })
+    if (type !== 'typeSquare'){
+      activeTetNL.forEach(function(cell){
+        let idxDif = parseInt(cell.id) - axisIdx
+        const isEqual = (number) => number === idxDif
+        const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
+        const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+        const newCellId = parseInt(cell.id) + rotationMoveReqd
+        dropCells[newCellId].classList.add('piece','moving',`${type}`)
+      })
+    }
   }
 }
 
@@ -547,11 +595,15 @@ function gameOverCheckFn(){
 }
 
 function gameOverFn() {
-  if (score > highScore){
+  if (score > highScore || !highScore){
     highScore = score
+    highScoreEl.innerText = highScore
+    localStorage.setItem('tetrisHighScore',score)
   }
   console.log('GAME OVER')
-  dropGridEl.innerHTML = '<h1 class = "welcome">GAME OVER<h1><button class="welcome start">START</button>'
+  const Sound = document.querySelector('#typeAMusic')
+  Sound.pause()
+  dropGridEl.innerHTML = '<section class = "welcome"><h1 class = "welcome">GAME OVER<h1><button class="welcome start">PLAY AGAIN</button></section>'
   gameOver = true
   clearInterval(interval)
   startButton = document.querySelector('.start')
@@ -600,6 +652,11 @@ function completeLineFn(row){
   console.log('Complete line function running for row: ', row)
   score += width
   scoreEl.innerText = score
+  // Set level based on score
+  level = parseInt(score / (10 * width))
+  levelEl.innerText = level
+  // Take 10% off automated movement interval each level
+  timeInterval = 0.9 ** (level - 1)
   // Remove completed row
   for (let cell = row * width; cell < (row + 1) * width; cell++){
     dropCells[cell].className = ''
@@ -626,7 +683,7 @@ function addLineFn(){
     newCell.innerText = cellToAdd
     newCell.id = cellToAdd
     // newCell.classList.add('newCell')
-    newCell.style.height = `${100 / (2 * width + 4)}%`
+    newCell.style.height = `${100 / (2 * width)}%`
     newCell.classList.add('dropCell')
     // console.log('New cell: ', newCell)
     // console.log('Drop cells: ', dropCells)
