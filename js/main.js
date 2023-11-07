@@ -462,7 +462,7 @@ function arrowRightFn(){
   dropCells[axisIndex].classList.add('axis')
 }
 
-//* User interactions - rotate
+//! User interactions - rotate
 // Triggered by up key event
 // Needs to check a) which piece b) how much space the piece has
 // Accordingly, will do some fun maths manipulations to each of the 4 piece's currentPosition index. Yay.
@@ -475,45 +475,60 @@ console.log('Rotation move array: ',rotationMoveArray)
 
 function rotateFn(){
   console.log('ROTATE FUNCTION EXECUTING')
+  let type
+  let pieceAtEdge = false
+  let landedPieceAdjacent = false
+  let modArray = []
   // Fetch activeTetNL again
-  //Log type of activeTetNL
-// Find index of axis cell
-activeTetNL = document.querySelectorAll('.moving')
-// console.log(activeTetNL)
-const axisCell = document.querySelector('.moving.axis')
-console.log(axisCell)
-const axisIdx = parseInt(axisCell.id )
-console.log('Axis Index: ', axisIdx)
-// Iterate over each cell within
-// For each cell within, find cellIdx - aIdx & use the rotation arrays to determine the change in index required
-let type
-activeTetNL.forEach(function(cell){
-  // Save type of piece/tetramino
-  cellClassArray = Array.from(cell.classList)
-      const cellClassArrayFiltered = cellClassArray.filter(function(className) {
-        return className.includes('type')
-      })
-      type = cellClassArrayFiltered.toString()
-      console.log(type)
-  // Remove moving classes from old cell
-  cell.classList.remove('moving','piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
-})
-console.log(type)
-activeTetNL.forEach(function(cell){
-  let idxDif = parseInt(cell.id) - axisIdx
-  // console.log('Index dif: ', idxDif)
-  // console.log(typeof(idxDif))
-  const isEqual = (number) => number === idxDif
-  const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
-  // console.log('Rotation origin array index: ',rotationOriginArrayIdx)
-  const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
-  // console.log('Rotation move required: ', rotationMoveReqd)
-  // Find type of current cell //! Here is where I'm currently working; need to remove the three cells first in one for each then add them back in a subsequent for each
-      
-  const newCellId = parseInt(cell.id) + rotationMoveReqd
-  console.log(dropCells[newCellId].classList)
-  dropCells[newCellId].classList.add('piece','moving',`${type}`)
-})
+  activeTetNL = document.querySelectorAll('.moving')
+  // Find index of axis cell
+  const axisCell = document.querySelector('.moving.axis')
+  const axisIdx = parseInt(axisCell.id )
+  
+  // Determine newCellId % width array
+  activeTetNL.forEach(function(cell){
+    let idxDif = parseInt(cell.id) - axisIdx
+    const isEqual = (number) => number === idxDif
+    const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
+    const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+    const newCellId = parseInt(cell.id) + rotationMoveReqd
+    const modNewCellId = newCellId % width
+    modArray.push(modNewCellId)
+    // Check if new cells contain landed pieces; if so, don't allow rotate function
+    if (dropCells[newCellId].classList.contains('landed')){
+      landedPieceAdjacent = true
+    }
+  })
+  // If this array contains 0 & width, don't allow rotate function
+  if(modArray.includes(0) && modArray.includes(width-1)){
+    pieceAtEdge = true
+  }
+
+  if (!pieceAtEdge && !landedPieceAdjacent){
+    // Iterate over each cell within
+    // For each cell within, find cellIdx - aIdx & use the rotation arrays to determine the change in index required
+    activeTetNL.forEach(function(cell){
+    // Save type of piece/tetramino
+    cellClassArray = Array.from(cell.classList)
+        const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+          return className.includes('type')
+        })
+        type = cellClassArrayFiltered.toString()
+        console.log(type)
+    // Remove moving classes from old cell
+    cell.classList.remove('moving','piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+    })
+    
+    // Determine rotation move required based on relative position of cell to axis cell
+    activeTetNL.forEach(function(cell){
+      let idxDif = parseInt(cell.id) - axisIdx
+      const isEqual = (number) => number === idxDif
+      const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
+      const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+      const newCellId = parseInt(cell.id) + rotationMoveReqd
+      dropCells[newCellId].classList.add('piece','moving',`${type}`)
+    })
+  }
 }
 
 // * Game over functions [2]
