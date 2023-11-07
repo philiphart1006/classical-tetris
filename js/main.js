@@ -9,6 +9,7 @@
 
 // ! Test logging
 
+
 // ! Elements
 // Get DOM elements for main grid, preview grid, start button
 const dropGridEl = document.querySelector('.dropGrid')
@@ -45,6 +46,7 @@ let timeInterval = 1000
 const starterSquare = width * 3.5 - 1
 let gameOver = false
 let gamePaused = false
+let musicMuted = false
 
 // ! Preview Grid
 // Create a preview grid that is 4x4 to display upcoming tetromino
@@ -176,50 +178,16 @@ function keyupFunctions(evt){
     rotateFn(rotationMoveArray)
   } else if (key === 'ShiftRight'){
     rotateFn(rotationMoveArray)
-    // Add in some tester keyboard actions for testing functions by pressing f
-  } else if (key === 'KeyF'){
-    // Put function to test in here
-    setPieceSquare(dropCells)
-  } else if (key === 'KeyZ'){
-    // Put function to test in here
-    autoMoveDownFn()
-  } else if (key === 'KeyX'){
-    // Put function to test in here
-    activateHoldingFn()
-  } else if (key === 'KeyG'){
-    // Put function to test in here
-    setPieceL(dropCells)
-  } else if (key === 'KeyH'){
-    // Put function to test in here
-    setPieceReverseL(dropCells)
-  } else if (key === 'KeyJ'){
-    // Put function to test in here
-    setPieceZ(dropCells)
-  } else if (key === 'KeyK'){
-    // Put function to test in here
-    setPieceReverseZ(dropCells)
-  } else if (key === 'KeyL'){
-    // Put function to test in here
-    setPieceT(dropCells)
-  } else if (key === 'Semicolon'){
-    // Put function to test in here
-    setPieceStraight(dropCells)
-  } else if (key === 'KeyD'){
-    // Put function to test in here
-    createRandomPiece()
-  } else if (key === 'KeyS'){
-    // Put function to test in here
-    completeLineFn()
-  // } else if (key === 'ArrowLeft'){
-  //   arrowLeftFn()
-  // } else if (key === 'ArrowRight'){
-  //   arrowRightFn()
   } else if (key === 'Space'){
     hardDropFn()
   } else if (key === 'KeyP' && !gamePaused) {
     pauseGameFn()
   } else if (key === 'KeyP' && gamePaused){
     unPauseGameFn()
+  } else if (key === 'KeyM' && !musicMuted){
+    muteMusicFn()
+  } else if (key === 'KeyM' && musicMuted){
+    unMuteMusicFn()
   }
 }
 
@@ -493,17 +461,33 @@ function hardDropFn(){
 }
 
 function pauseGameFn(){
+  console.log('Executing pause game function')
   const Sound = document.querySelector('#typeAMusic')
   Sound.pause()
   gamePaused = true
   clearInterval(interval)
+  // keyupFunctions(evt)
+  window.addEventListener('keyup', keyupFunctions)
+  window.addEventListener('keydown', keydownFunctions)
 }
 
 function unPauseGameFn(){
+  console.log('Executing unpause game function')
   const Sound = document.querySelector('#typeAMusic')
   Sound.play()
   gamePaused = false
   autoMoveDownFn()
+}
+
+function muteMusicFn(){
+  const Sound = document.querySelector('#typeAMusic')
+  Sound.pause()
+  musicMuted = true
+}
+function unMuteMusicFn(){
+  const Sound = document.querySelector('#typeAMusic')
+  Sound.play()
+  musicMuted = false
 }
 
 //! User interactions - rotate
@@ -711,6 +695,33 @@ startButton.addEventListener('click',startGame)
 window.addEventListener('keyup', keyupFunctions)
 window.addEventListener('keydown', keydownFunctions)
 
+// ! Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key
+const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','muteButton']
+const controlButtons = []
+controlNames.forEach(function(button){
+  button = document.querySelector(`#${button}`)
+  controlButtons.push(button)
+})
+console.log('Returned button elements: ', controlButtons)
+
+controlButtons[0].addEventListener('click',arrowLeftFn)
+controlButtons[1].addEventListener('click',arrowRightFn)
+controlButtons[2].addEventListener('click',moveDownFn)
+controlButtons[3].addEventListener('click',hardDropFn)
+// controlButtons[4].addEventListener('click',rotateFn(rotationMoveArray))
+// controlButtons[5].addEventListener('click',rotateFn(rotationMoveAntiArray))
+
+// if (!gamePaused) {
+//   controlButtons[6].addEventListener('click',pauseGameFn())
+// } else {
+// controlButtons[6].addEventListener('click',unPauseGameFn())
+// }
+
+if (!musicMuted) {
+  controlButtons[7].addEventListener('click',muteMusicFn)
+} else {
+  controlButtons[7].addEventListener('click',unMuteMusicFn)
+}
 
 // ! Page Load
 // Wait until start button is pressed to generate main grid

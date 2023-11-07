@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classical Tetris</title>
     <link rel="stylesheet" href="css/main.css">
-    <script defer src="js/main.js"></script>  
+    <script defer src="js/main.js"></script> 
+    <script src="https://kit.fontawesome.com/d0ea79552d.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
 </head>
 <body>
     <main class="dropGrid">
@@ -17,14 +21,28 @@
     </main>
     <section class="sidebar">
       <img class="logo" src="assets/logo.png">
-      <section class="highScore">
-        <p>High Score: <br><span id="highScoreId"></span></p>
+      <section class = "controls">
+        <button id="leftButton">Left</button><p>Move left</p>
+        <button id="rightButton">Right</button><p>Move right</p>
+        <button id="downButton">Down</button><p>Move down</p>
+        <button id="spaceButton">Space</button><p>Drop piece</p>
+        <button id="upButton">Up</button><p>Rotate</p>
+        <button id="shiftButton">Shift</button><p>Rotate back</p>
+        <button id="pauseButton">P</button><p>Pause/ Unpause</p>
+        <button id="muteButton">M</button><p>Mute/ Unmute</p>
+        <button id="spareButton"></button><p></p>
+        <button id="spareButton2"></button><p></p>
       </section>
-      <section class="currentScore">
-        <p>Current Score: <br><span id="currentScoreId"></span></p>
-      </section>
-      <section class="level">
-        <p>Level: <br><span id="levelId"></span></p>
+      <section class="metrics">
+        <section class="highScore">
+          <p>High Score: <br><span id="highScoreId"></span></p>
+        </section>
+        <section class="currentScore">
+          <p>Current Score: <br><span id="currentScoreId"></span></p>
+        </section>
+        <section class="level">
+          <p>Level: <br><span id="levelId"></span></p>
+        </section>
       </section>
       <section class="previewGrid">
       </section>

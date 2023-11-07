@@ -2,7 +2,8 @@
     /* height & width now includes border & padding */
     box-sizing: border-box;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
+    font-family: 'Rubik Mono One', monospace;
   }
 
   body {
@@ -18,11 +19,29 @@
     background-color: rgb(157, 157, 157);
   }
 
+/** Start elements */
   section.welcome{
     background-color: #a5a5a5a4;
     padding: 1em
   }
 
+  button.start {
+    width: 33%;
+    padding: 1em;
+    font-weight: bold;
+    margin: 1em 0 0 0
+  }
+
+  h1 {
+    font-size: 3em;
+    font-family: 'Rubik Mono One', monospace;
+  }
+
+  h2 {
+    font-size: 1.5em
+  }
+
+/** Main elements  */
   .dropGrid {
     height: 100%;
     aspect-ratio: 0.5;
@@ -39,6 +58,13 @@
     color: rgb(70, 70, 70, 0)
   }
 
+  div {
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(43, 43, 43)
+  }
+
+/** Sidebar and contents */
   .sidebar {
     background-color: darkgray;
     height: 100%;
@@ -49,61 +75,69 @@
     justify-content: center;
   }
 
-  .sidebar * {
+  .sidebar > * {
     margin: 0.5em 1em;
     
   }
 
   .sidebar p {
     background-color: cadetblue;
-    margin: 1em 2em;
+    margin: 0;
     padding: 0.5em;
-    min-height: 3em;
+    min-height: 4em;
     text-align: center;
   }
 
-  button.start {
-    width: 33%;
-    padding: 1em;
-    font-weight: bold;
-    margin: 1em 0 0 0
-  }
-
-  h1 {
-    font-size: 3em
-  }
-
-  h2 {
-    font-size: 1.5em
-  }
-
-  div {
-    border: solid;
-    border-width: 1px;
-    border-color: rgb(43, 43, 43)
-  }
-
   .logo {
-    width: 50%;
+    width: 60%;
     align-self: center;
+    margin-bottom: 3em;
+  }
+
+
+  .controls button {
+    font-size: 0.6em;
+    padding: 0;
+    height: 100%
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 15% 35% 15% 35%;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    text-align: center;
+    align-items: center;
+    grid-gap: 3px;
+  }
+
+  .metrics {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .metrics * {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%
   }
 
   .previewGrid {
     background-color: black;
-    margin: 2em;
+    margin: 1em 4em;
     aspect-ratio: 1;
     display: flex;
     flex-wrap: wrap;
     color: rgba(0,0,0,0)
   }
 
+  /* Make the top 4 * width cells hidden with hidden attribute */
   .holdingGrid {
-    /* Make the top 4 * width cells hidden with hidden attribute */
-    /* background-color: peachpuff; */
     display: none
+    /* background-color: peachpuff; */
   }
 
-  /* Assignable classes for pieces: */
+/** Assignable classes for pieces: */
 
   .piece.typeStraight{
     background-color: aqua;
