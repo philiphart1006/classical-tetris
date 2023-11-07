@@ -173,7 +173,9 @@ function keyupFunctions(evt){
   if (key === 'Enter'){
     startGame()
   } else if (key === 'ArrowUp'){
-    rotateFn()
+    rotateFn(rotationMoveArray)
+  } else if (key === 'ShiftRight'){
+    rotateFn(rotationMoveArray)
     // Add in some tester keyboard actions for testing functions by pressing f
   } else if (key === 'KeyF'){
     // Put function to test in here
@@ -517,7 +519,7 @@ console.log('Rotation move array: ',rotationMoveArray)
 // Anticlockwise transformations:
 const rotationMoveAntiArray = [(3*width+3),(3*width+1),(2*width+2),(2*width),(width+1),(2),(-width+3),(3*width-3),(2*width-2),(width-1),(0),(-width+1),(-2*width+2),(-3*width+3),(width-3),(-2),(-width-1),(-2*width-1),(-2*width-2),(-3*width-1),(-3*width-3),]
 
-function rotateFn(){
+function rotateFn(rotationArray){
   console.log('ROTATE FUNCTION EXECUTING')
   let type
   let pieceAtEdge = false
@@ -534,7 +536,7 @@ function rotateFn(){
     let idxDif = parseInt(cell.id) - axisIdx
     const isEqual = (number) => number === idxDif
     const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
-    const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+    const rotationMoveReqd = rotationArray[rotationOriginArrayIdx]
     const newCellId = parseInt(cell.id) + rotationMoveReqd
     const modNewCellId = newCellId % width
     modArray.push(modNewCellId)
@@ -571,7 +573,7 @@ function rotateFn(){
         let idxDif = parseInt(cell.id) - axisIdx
         const isEqual = (number) => number === idxDif
         const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
-        const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+        const rotationMoveReqd = rotationArray[rotationOriginArrayIdx]
         const newCellId = parseInt(cell.id) + rotationMoveReqd
         dropCells[newCellId].classList.add('piece','moving',`${type}`)
       })
