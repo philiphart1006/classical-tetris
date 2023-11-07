@@ -25,8 +25,6 @@ const levelEl = document.querySelector('#levelId')
 // Create empty node lists for preview, moving, & hold tetraminoes
 let holdTetNL = []
 let activeTetNL = []
-// let landedTetsNL = []
-// This will be a node list of cells that are both landed and hold
 let gameOverNL = []
 
 // ! Variables
@@ -86,11 +84,10 @@ function createMainGrid() {
 }
 
 
-// ! JS CClasses --> these will group four functions to move tetromino pieces together
-// One for each available tetromino
+// ! Piece creation
+// One for each available tetromino (7)
 //Declare type & starters array as global variables to allow them to be reached by multiple functions
-// Adds relevant classes to four cells in previewGrid: .piece .preview .{color}
-// Another set of complementary classes to create in the holding bay?
+// Adds relevant classes to four cells in dropGrid and previewGrid: .piece .preview/.holding .type*
 let type
 let Starters = []
 const shapesArray = ['Square','L','ReverseL','Z','ReverseZ','T','Straight']
@@ -120,7 +117,7 @@ function setPieceL(cells) {
 }
 //ReverseL (H)
 function setPieceReverseL(cells) {
-  cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width + 1), (starterSquare - 2 * width + 1)] : Starters = [6, 10, 13, 14]
+  cells === dropCells ? Starters = [starterSquare, (starterSquare - 1), (starterSquare - width), (starterSquare - 2 * width)] : Starters = [5, 9, 12, 13]
   type = 'typeReverseL'
   createPiece(cells)
 }
@@ -138,17 +135,17 @@ function setPieceReverseZ(cells) {
 }
 //T (L)
 function setPieceT(cells) {
-  cells === dropCells ? Starters = [starterSquare, (starterSquare - width + 1), (starterSquare - width), (starterSquare - 2 * width)] : Starters = [5, 9, 10, 13]
+  cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - 1)] : Starters = [12, 9, 10, 14]
   type = 'typeT'
   createPiece(cells)
 }
 //Straight (;)
 function setPieceStraight(cells) {
-  cells === dropCells ? Starters = [starterSquare, (starterSquare - width), (starterSquare - 2 * width), (starterSquare - 3 * width)] : Starters = [1, 5, 9, 13]
+  cells === dropCells ? Starters = [starterSquare, (starterSquare - 1), (starterSquare + 1), (starterSquare + 2)] : Starters = [12, 13, 14, 15]
   type = 'typeStraight'
   createPiece(cells)
 }
-
+//Create piece
 function createPiece(cells){
   Starters.forEach(function(StarterIdx){
     if (cells === dropCells){cells[StarterIdx].classList.add('piece',`${type}`,'hold')
@@ -159,12 +156,6 @@ function createPiece(cells){
 }
   })
 }
-
-// function createPreviewPiece(cells){
-//   Starters.forEach(function(StarterIdx){
-//     cells[StarterIdx].classList.add('piece','preview',`${type}`)
-//   })
-// }
 
 // ! Executions
 
@@ -211,10 +202,10 @@ function keyupFunctions(evt){
   } else if (key === 'KeyS'){
     // Put function to test in here
     completeLineFn()
-  } else if (key === 'ArrowLeft'){
-    arrowLeftFn()
-  } else if (key === 'ArrowRight'){
-    arrowRightFn()
+  // } else if (key === 'ArrowLeft'){
+  //   arrowLeftFn()
+  // } else if (key === 'ArrowRight'){
+  //   arrowRightFn()
   }
 }
 
@@ -224,10 +215,10 @@ function keydownFunctions(evt){
   const key = evt.code
   if (key === 'ArrowDown'){
     arrowDownFn()
-  // } else if (key === 'ArrowLeft'){
-  //   arrowLeftFn()
-  // } else if (key === 'ArrowRight'){
-  //   arrowRightFn()
+  } else if (key === 'ArrowLeft'){
+    arrowLeftFn()
+  } else if (key === 'ArrowRight'){
+    arrowRightFn()
   }
 }
 
@@ -479,7 +470,7 @@ function arrowRightFn(){
 const rotationOriginArray = [-3,(-width-2),-2,(-width-1),-1,(width-1),(2*width-1),(-3*width),(-2*width),(-width),0,(width),(2*width),(3*width),(-2*width+1),(-width+1),1,(width+1),2,width+2,3]
 console.log('Rotation origin array: ',rotationOriginArray)
 // Based on the rotationOriging, what transformation needs to happen to the current piece's index when rotating?
-const rotationMoveArray = [(-3*width-3),(-width+3),((-2*width)+2),2,(-width+1),(-2*width),(-3*width-1),(3*width+3),((2*width)+2),(width+1),0,(-width-1),((-2*width)-2),(-3*width-3),(3*width+1),(2*width),(width-1),-2,((2*width)-2),(-width-3),(3*width-3)]
+const rotationMoveArray = [(-3*width+3),(-width+3),((-2*width)+2),2,(-width+1),(-2*width),(-3*width-1),(3*width+3),((2*width)+2),(width+1),0,(-width-1),((-2*width)-2),(-3*width-3),(3*width+1),(2*width),(width-1),-2,((2*width)-2),(-width-3),(3*width-3)]
 console.log('Rotation move array: ',rotationMoveArray)
 
 function rotateFn(){
@@ -495,25 +486,32 @@ const axisIdx = parseInt(axisCell.id )
 console.log('Axis Index: ', axisIdx)
 // Iterate over each cell within
 // For each cell within, find cellIdx - aIdx & use the rotation arrays to determine the change in index required
+let type
 activeTetNL.forEach(function(cell){
-  let idxDif = parseInt(cell.id) - axisIdx
-  console.log('Index dif: ', idxDif)
-  // console.log(typeof(idxDif))
-  const isEqual = (number) => number === idxDif
-  const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
-  console.log('Rotation origin array index: ',rotationOriginArrayIdx)
-  const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
-  console.log('Rotation move required: ', rotationMoveReqd)
-  // Find type of current cell //! Here is where I'm currently working
-  cell.classList.remove('moving','piece')
-      cellClassArray = Array.from(cell.classList)
+  // Save type of piece/tetramino
+  cellClassArray = Array.from(cell.classList)
       const cellClassArrayFiltered = cellClassArray.filter(function(className) {
         return className.includes('type')
       })
       type = cellClassArrayFiltered.toString()
+      console.log(type)
   // Remove moving classes from old cell
   cell.classList.remove('moving','piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+})
+console.log(type)
+activeTetNL.forEach(function(cell){
+  let idxDif = parseInt(cell.id) - axisIdx
+  // console.log('Index dif: ', idxDif)
+  // console.log(typeof(idxDif))
+  const isEqual = (number) => number === idxDif
+  const rotationOriginArrayIdx = rotationOriginArray.findIndex(isEqual)
+  // console.log('Rotation origin array index: ',rotationOriginArrayIdx)
+  const rotationMoveReqd = rotationMoveArray[rotationOriginArrayIdx]
+  // console.log('Rotation move required: ', rotationMoveReqd)
+  // Find type of current cell //! Here is where I'm currently working; need to remove the three cells first in one for each then add them back in a subsequent for each
+      
   const newCellId = parseInt(cell.id) + rotationMoveReqd
+  console.log(dropCells[newCellId].classList)
   dropCells[newCellId].classList.add('piece','moving',`${type}`)
 })
 }
