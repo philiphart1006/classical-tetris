@@ -14,6 +14,19 @@
     justify-content: center;
   }
 
+  @media screen and (min-width: 1200px) {
+    .classicalBody{
+      background-image: url(../assets/colosseum.jpg);
+      background-size: cover;
+      background-repeat: no-repeat
+    }
+  }
+  
+
+  /* Attribution to add to body when page wide enough: */
+  /* Photo by <a href="https://unsplash.com/@bdv91?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Dmitry Bukhantsov</a> on <a href="https://unsplash.com/photos/the-inside-of-an-old-building-with-a-lot-of-windows-DexkTCvt-eA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+   */
+
   section {
     background-color: rgb(157, 157, 157);
   }
@@ -107,7 +120,7 @@
 
   .controls {
     display: grid;
-    grid-template-columns: 15% 35% 15% 35%;
+    grid-template-columns: 35% 15% 15% 35%;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     text-align: center;
     align-items: center;
@@ -177,4 +190,70 @@
     background-color: red;
   }
 
+@media screen and (max-width: 600px) {
+  body {
+    display: grid;
+    grid-template-rows: 70% 30%
+  }
 
+  main {
+    align-self: center;
+    justify-self: center;
+  }
+
+  .logo, .credits {
+    display: none
+  }
+  /* .credits {
+    display: none
+  } */
+
+  .sidebar {
+    width: 100vh;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .sidebar * {
+    margin: 0.5em 0.2em
+  }
+
+  .sidebar p {
+    padding: 0.1em
+  }
+
+  .metrics {
+    flex-direction: column;
+    padding: 0.7em
+  }
+
+  .metrics * {
+    font-size: 1em;
+  }
+
+  .futureGrids {
+    margin: 0em 0.5em;
+    display: flex;
+    flex-direction: column
+  }
+
+  .futureGrids p {
+    display: none
+  }
+
+  .futureGrid {
+    margin: 0.1em 0.5em
+  }
+
+  .controls p {
+    display: none;
+    /* padding: 0.5em; */
+    margin: 0.5em 0.5em
+  }
+
+  .controls {
+    display: grid;
+    grid-template-rows: 19% 19% 19% 19% 19%;
+    grid-template-columns: 50% 50%;
+  }
+}

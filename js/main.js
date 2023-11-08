@@ -14,7 +14,7 @@ let mode = 'classic'
 
 // ! Elements
 // Get DOM elements for main grid, preview grid, start button
-const dropGridEl = document.querySelector('.dropGrid')
+let dropGridEl = document.querySelector('.dropGrid')
 const previewGridEl = document.querySelector('.previewGrid')
 const storeGridEl = document.querySelector('.storeGrid')
 let startButton = document.querySelector('.start')
@@ -52,7 +52,7 @@ let timeInterval = 1000
 const starterSquare = width * 3.5 - 1
 let gameOver = false
 let gamePaused = false
-let musicMuted = true
+let musicMuted = false
 
 // ! Preview Grid
 // Create a preview grid that is 4x4 to display upcoming tetromino
@@ -223,7 +223,8 @@ function startGameClassical() {
   mode = 'classical'
   let audio = document.querySelector('#typeAMusic')
   audio.src='assets/classicalMusic.mp3'
-
+  let body = document.querySelector('body')
+  body.classList.add('classicalBody')
   startGame()
 }
 
@@ -528,57 +529,60 @@ function unMuteMusicFn(){
 
 // * Store/Retrieve piece
 function storePieceFn(){
+  // Only allow to run if active piece is fully in dropGrid
+  const holdingBayNL = document.querySelectorAll('.holdingGrid.piece.moving')
   // Deduce type of stored piece
-  let storeType
-  storeTetNL = storeGridEl.querySelectorAll('.piece')
-  if (storeTetNL.length > 0) {
-    const cell = storeTetNL[0]
-    cellClassArray = Array.from(cell.classList)
-        const cellClassArrayFiltered = cellClassArray.filter(function(className) {
-          return className.includes('type')
-        })
-        storeType = cellClassArrayFiltered.toString()
-        storeShape = storeType.slice(4)
-      }
-  // Deduce type of active piece
-  console.log("STORE PIECE FUNCTION ACTIVATING")
-  let type
-  activeTetNL = document.querySelectorAll('.moving')
-  activeTetNL.forEach(function(cell){
-    // Save type of piece/tetramino
-    cellClassArray = Array.from(cell.classList)
-        const cellClassArrayFiltered = cellClassArray.filter(function(className) {
-          return className.includes('type')
-        })
-        type = cellClassArrayFiltered.toString()
-        console.log(type)
-  })
-  const shape = type.slice(4)
-  let fnToRun = `setPiece${shape}`
-  storeCells.forEach(function(cell){
-  cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
-  })
-  eval(fnToRun + '(storeCells)')
-  activeTetNL.forEach(function(cell){
-    cell.classList.remove('piece','moving','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
-  })
-  // If no store piece currently:
-  if (storeTetNL.length == 0){
-    activateHoldingFn()
-  } else{
-    holdTetNL = document.querySelectorAll('.hold')
-    holdTetNL.forEach(function(cell){
-      cell.classList.remove('piece','hold','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+  if (holdingBayNL.length == 0){
+    let storeType
+    storeTetNL = storeGridEl.querySelectorAll('.piece')
+    if (storeTetNL.length > 0) {
+      const cell = storeTetNL[0]
+      cellClassArray = Array.from(cell.classList)
+          const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+            return className.includes('type')
+          })
+          storeType = cellClassArrayFiltered.toString()
+          storeShape = storeType.slice(4)
+        }
+    // Deduce type of active piece
+    console.log("STORE PIECE FUNCTION ACTIVATING")
+    let type
+    activeTetNL = document.querySelectorAll('.moving')
+    activeTetNL.forEach(function(cell){
+      // Save type of piece/tetramino
+      cellClassArray = Array.from(cell.classList)
+          const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+            return className.includes('type')
+          })
+          type = cellClassArrayFiltered.toString()
+          console.log(type)
     })
-    fnToRun = `setPiece${storeShape}`
-    eval(fnToRun + '(dropCells)')
-    activateHoldingFn()
-  }
-  
+    const shape = type.slice(4)
+    let fnToRun = `setPiece${shape}`
+    storeCells.forEach(function(cell){
+    cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+    })
+    eval(fnToRun + '(storeCells)')
+    activeTetNL.forEach(function(cell){
+      cell.classList.remove('piece','moving','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+    })
+    // If no store piece currently:
+    if (storeTetNL.length == 0){
+      activateHoldingFn()
+    } else{
+      holdTetNL = document.querySelectorAll('.hold')
+      holdTetNL.forEach(function(cell){
+        cell.classList.remove('piece','hold','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+      })
+      fnToRun = `setPiece${storeShape}`
+      eval(fnToRun + '(dropCells)')
+      activateHoldingFn()
+    }
   // If store piece exists already, remove holding piece and create piece with same type then activate holding fn
   // Re-create current piece in storeGrid with .storeCells class
   // Remove active piece classes from drop grid
   // Activate next piece in holding
+  }
 }
 
 //! User interactions - rotate
@@ -725,8 +729,7 @@ function completeLineCheckFn() {
 function completeLineFn(row){
   console.log('Complete line function running for row: ', row)
   const Sound = document.querySelector('#successSound')
-  Sound.play()
-
+  if(!musicMuted) {Sound.play()}
   score += width
   scoreEl.innerText = score
   // Set level based on score
@@ -780,7 +783,7 @@ window.addEventListener('keyup', keyupFunctions)
 window.addEventListener('keydown', keydownFunctions)
 
 // ! Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key; this is broken
-const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','muteButton']
+const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','unPauseButton','muteButton','unMuteButton']
 const controlButtons = []
 controlNames.forEach(function(button){
   button = document.querySelector(`#${button}`)
@@ -794,12 +797,10 @@ controlButtons[2].addEventListener('click',moveDownFn)
 controlButtons[3].addEventListener('click',hardDropFn)
 // controlButtons[4].addEventListener('click',rotateFn(rotationMoveArray))
 // controlButtons[5].addEventListener('click',rotateFn(rotationMoveAntiArray))
-
-// if (!gamePaused) {
-//   controlButtons[6].addEventListener('click',pauseGameFn())
-// } else {
-// controlButtons[6].addEventListener('click',unPauseGameFn())
-// }
+controlButtons[6].addEventListener('click',pauseGameFn)
+controlButtons[7].addEventListener('click',unPauseGameFn)
+controlButtons[8].addEventListener('click',muteMusicFn)
+controlButtons[9].addEventListener('click',unMuteMusicFn)
 
 if (!musicMuted) {
   controlButtons[7].addEventListener('click',muteMusicFn)
