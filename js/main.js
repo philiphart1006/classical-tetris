@@ -18,6 +18,7 @@ const dropGridEl = document.querySelector('.dropGrid')
 const previewGridEl = document.querySelector('.previewGrid')
 const storeGridEl = document.querySelector('.storeGrid')
 let startButton = document.querySelector('.start')
+let classicalStartButton = document.querySelector('.incipere')
 
 // Welcome elements that will be hidden on game start
 let welcomeNL = document.querySelectorAll('.welcome')
@@ -220,6 +221,9 @@ function startGameClassic() {
 
 function startGameClassical() {
   mode = 'classical'
+  let audio = document.querySelector('#typeAMusic')
+  audio.src='assets/classicalMusic.mp3'
+
   startGame()
 }
 
@@ -373,7 +377,7 @@ function autoMoveDownFn(){
   }, timeInterval)
 }
 
-//* User interactions - translate
+//! User interactions - translate
 // moveLeft: Triggered by eventlisteners; checks that positionPiecez-c + 1 % width !== 0 → increases positionPiecez-c by one
 // moveRight: checks that positionPiece1-4 % width !== 0 → increases positionPiecec-z- by one
 // moveDown: Each time clicked, increase the currentPositionPiecez-c by width indices for movingPiece class
@@ -477,6 +481,7 @@ function arrowRightFn(){
 }
 
 //! Enhancements
+//  * Drop piece to bottom immediately
 function hardDropFn(){
   if (!gamePaused && !gameOver){
   console.log('HARD DROP FUNCTION ACTIVATED')
@@ -488,6 +493,7 @@ function hardDropFn(){
   }
 }
 
+// * Pause/Unpause
 function pauseGameFn(){
   console.log('Executing pause game function')
   const Sound = document.querySelector('#typeAMusic')
@@ -508,6 +514,7 @@ function unPauseGameFn(){
   autoMoveDownFn()
 }
 
+// * Mute/Unmute
 function muteMusicFn(){
   const Sound = document.querySelector('#typeAMusic')
   Sound.pause()
@@ -519,22 +526,18 @@ function unMuteMusicFn(){
   musicMuted = false
 }
 
+// * Store/Retrieve piece
 function storePieceFn(){
   // Deduce type of stored piece
   let storeType
   storeTetNL = storeGridEl.querySelectorAll('.piece')
-  console.log('Store Tet NL: ',storeTetNL)
-  console.log('Boolean of store tet NL: ', Boolean(storeTetNL))
-  console.log('Store Tet NL node list: ', storeTetNL.length)
   if (storeTetNL.length > 0) {
-    console.log('Checking scored tet type')
     const cell = storeTetNL[0]
     cellClassArray = Array.from(cell.classList)
         const cellClassArrayFiltered = cellClassArray.filter(function(className) {
           return className.includes('type')
         })
         storeType = cellClassArrayFiltered.toString()
-        console.log('Stored tet type: ',storeType)
         storeShape = storeType.slice(4)
       }
   // Deduce type of active piece
@@ -559,21 +562,15 @@ function storePieceFn(){
   activeTetNL.forEach(function(cell){
     cell.classList.remove('piece','moving','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
   })
-  console.log('Store Tet Length Type 561: ', typeof(storeTetNL.length))
   // If no store piece currently:
   if (storeTetNL.length == 0){
-    console.log('Activating holding fn from store piece fn')
     activateHoldingFn()
   } else{
-    console.log('Creating new holding piece from ')
     holdTetNL = document.querySelectorAll('.hold')
-    console.log('holdTetNL: ', holdTetNL)
     holdTetNL.forEach(function(cell){
       cell.classList.remove('piece','hold','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
     })
-    console.log('Setting new piece')
     fnToRun = `setPiece${storeShape}`
-    console.log('Function to run: ', fnToRun)
     eval(fnToRun + '(dropCells)')
     activateHoldingFn()
   }
@@ -661,16 +658,14 @@ function rotateFn(rotationArray){
 }
 }
 
+// ! Game over & complete line functions
 // * Game over functions [2]
 //When a piece is switched to 'landed' but is within the first 4 * width indices still, this will trigger a game over function that stops gameplay
 //Set new highscore if score > highscore; updates highScore span
 //Clears all intervals
 // Removes the hidden attribute from start button
 function gameOverCheckFn(){
-  // console.log('GAME OVER CHECK FUNCTION')
   gameOverNL = document.querySelector('.holdingGrid.landed')
-  // console.log('GAME OVER NODE LIST: ', gameOverNL)
-  // console.log('Boolean of gameoverNL: ', !gameOverNL)
   if (gameOverNL) {
     gameOverFn()
   }
@@ -688,7 +683,6 @@ function gameOverFn() {
   gameOver = true
   clearInterval(interval)
   startButton = document.querySelector('.start')
-  console.log('Start Button element: ', startButton)
   startButton.addEventListener('click',startGame)
   dropCells = []
   dropGridEl = document.querySelector('.dropGrid') // New Code
@@ -757,8 +751,7 @@ function completeLineFn(row){
   //Create and add width cells before index 5*width
   addLineFn()
 }
-// ! Find index of cell in dropCells first rather than using id
-// ! Go from bottom of shifting section and move classes of row above down to that cell
+// * Adds new line to top
 function addLineFn(){
   for (let cellToAdd = 4 * width; cellToAdd < 5 * width; cellToAdd ++) {
     const newCell = document.createElement('div')
@@ -777,22 +770,16 @@ function addLineFn(){
   console.log(dropCells)
 }
 
-
-// * Sidebar updates N/A
-// These actions will be triggered within other functions
-
-// ! Events
+//! Events
 // Clicking start button; this should also re-set the game
 startButton.addEventListener('click',startGameClassic)
-startButton.addEventListener('click',startGameClassical)
-//Arrow down, left, right as keydown listeners that trigger appropriate moveX function above
-//Arrow up for rotate function
-// Spacebar (for hard drop)
-// * Add in some test keys to test functions as they're being coded
+classicalStartButton.addEventListener('click',startGameClassical)
+
+// * Add in keyboard listeners
 window.addEventListener('keyup', keyupFunctions)
 window.addEventListener('keydown', keydownFunctions)
 
-// ! Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key
+// ! Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key; this is broken
 const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','muteButton']
 const controlButtons = []
 controlNames.forEach(function(button){
