@@ -127,13 +127,18 @@
   }
 
   .futureGrids {
-    display: flex;
-    justify-content: space-around;
+    /* display: flex;
+    justify-content: space-around; */
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 15% 85%;
+    align-items: center;
+    justify-content: center;
   }
 
-  .futureGrids > * {
+  .futureGrid {
     background-color: black;
-    width: 30%;
+    width: 80%;
     margin: 1em 1em;
     aspect-ratio: 1;
     display: flex;
@@ -143,8 +148,8 @@
 
   /* Make the top 4 * width cells hidden with hidden attribute */
   .holdingGrid {
-    display: none
-    /* background-color: peachpuff; */
+    /* display: none */
+    background-color: peachpuff;
   }
 
 /** Assignable classes for pieces: */

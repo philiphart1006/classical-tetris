@@ -31,6 +31,7 @@ const levelEl = document.querySelector('#levelId')
 let holdTetNL = []
 let activeTetNL = []
 let gameOverNL = []
+let storeTetNL = []
 
 // Get High SCore from local
 let highScore = localStorage.getItem('tetrisHighScore')
@@ -477,7 +478,7 @@ function arrowRightFn(){
 
 //! Enhancements
 function hardDropFn(){
-  if (!gamePaused){
+  if (!gamePaused && !gameOver){
   console.log('HARD DROP FUNCTION ACTIVATED')
   clearInterval(interval)
   console.log('Time interval at start of hard drop function: ', timeInterval)
@@ -519,6 +520,23 @@ function unMuteMusicFn(){
 }
 
 function storePieceFn(){
+  // Deduce type of stored piece
+  let storeType
+  storeTetNL = storeGridEl.querySelectorAll('.piece')
+  console.log('Store Tet NL: ',storeTetNL)
+  console.log('Boolean of store tet NL: ', Boolean(storeTetNL))
+  console.log('Store Tet NL node list: ', storeTetNL.length)
+  if (storeTetNL.length > 0) {
+    console.log('Checking scored tet type')
+    const cell = storeTetNL[0]
+    cellClassArray = Array.from(cell.classList)
+        const cellClassArrayFiltered = cellClassArray.filter(function(className) {
+          return className.includes('type')
+        })
+        storeType = cellClassArrayFiltered.toString()
+        console.log('Stored tet type: ',storeType)
+        storeShape = storeType.slice(4)
+      }
   // Deduce type of active piece
   console.log("STORE PIECE FUNCTION ACTIVATING")
   let type
@@ -533,7 +551,7 @@ function storePieceFn(){
         console.log(type)
   })
   const shape = type.slice(4)
-  const fnToRun = `setPiece${shape}`
+  let fnToRun = `setPiece${shape}`
   storeCells.forEach(function(cell){
   cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
   })
@@ -541,7 +559,26 @@ function storePieceFn(){
   activeTetNL.forEach(function(cell){
     cell.classList.remove('piece','moving','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
   })
-  activateHoldingFn()
+  console.log('Store Tet Length Type 561: ', typeof(storeTetNL.length))
+  // If no store piece currently:
+  if (storeTetNL.length == 0){
+    console.log('Activating holding fn from store piece fn')
+    activateHoldingFn()
+  } else{
+    console.log('Creating new holding piece from ')
+    holdTetNL = document.querySelectorAll('.hold')
+    console.log('holdTetNL: ', holdTetNL)
+    holdTetNL.forEach(function(cell){
+      cell.classList.remove('piece','hold','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+    })
+    console.log('Setting new piece')
+    fnToRun = `setPiece${storeShape}`
+    console.log('Function to run: ', fnToRun)
+    eval(fnToRun + '(dropCells)')
+    activateHoldingFn()
+  }
+  
+  // If store piece exists already, remove holding piece and create piece with same type then activate holding fn
   // Re-create current piece in storeGrid with .storeCells class
   // Remove active piece classes from drop grid
   // Activate next piece in holding
