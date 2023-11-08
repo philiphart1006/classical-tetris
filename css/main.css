@@ -27,7 +27,7 @@
 
   button.welcome {
     width: 33%;
-    padding: 1em;
+    padding: 1em 0;
     font-weight: bold;
     margin: 1em 0 0 0
   }
@@ -185,7 +185,7 @@
   @media screen and (max-width: 600px) {
     body {
       display: grid;
-      grid-template-rows: 60% 30%
+      grid-template-rows: 60% 20%
     }
   
     main {

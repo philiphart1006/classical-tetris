@@ -235,7 +235,7 @@ function timeTravelFn (){
     mode = 'classical'
     let audio = document.querySelector('#typeAMusic')
     audio.src='assets/classicalMusic.mp3'
-    if (!musicMuted){
+    if (!musicMuted && !gamePaused){
       audio.play()
     }
     let body = document.querySelector('body')
@@ -248,7 +248,7 @@ function timeTravelFn (){
     mode = 'classic'
     let audio = document.querySelector('#typeAMusic')
     audio.src='assets/typeAMusic.mp3'
-    if (!musicMuted){
+    if (!musicMuted && !gamePaused){
       audio.play()
     }
     let body = document.querySelector('body')

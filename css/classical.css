@@ -40,7 +40,7 @@
 
   button.welcome {
     width: 33%;
-    padding: 1em;
+    padding: 1em 0;
     font-weight: bold;
     margin: 1em 0 0 0
   }
@@ -62,7 +62,12 @@
   .dropGrid {
     height: 100%;
     aspect-ratio: 0.5;
-    background-color: rgb(131, 127, 115);
+    /* background-color: rgb(131, 127, 115); */
+    background: linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('../assets/romanChurch.jpg');
+    /* background-image: url(../assets/romanChurch.jpg); */
+      background-size: cover;
+      background-repeat: no-repeat;
+      /* opacity: 30%; */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -78,7 +83,7 @@
   div {
     border: solid;
     border-width: 1px;
-    border-color: rgb(43, 43, 43)
+    border-color: rgba(43, 43, 43, 0.482)
   }
 
 /** Sidebar and contents */
@@ -197,7 +202,7 @@
   @media screen and (max-width: 600px) {
     body {
       display: grid;
-      grid-template-rows: 60% 30%
+      grid-template-rows: 60% 20%
     }
   
     main {
@@ -239,7 +244,8 @@
     }
 
     .metrics p {
-      min-height: 2em
+      min-height: 2em;
+      padding-top: 0.6em
     }
   
     .futureGrids {
@@ -270,3 +276,8 @@
       grid-template-columns: 50% 50%;
     }
   }
+
+
+  /* Credits: */
+  /* Photo by <a href="https://unsplash.com/@lynnvdbr?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Lynn Van den Broeck</a> on <a href="https://unsplash.com/photos/a-large-building-with-a-palm-tree-in-front-of-it-_esFpZhZ2B4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a> */
+  
