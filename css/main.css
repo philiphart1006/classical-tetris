@@ -148,8 +148,8 @@
 
   /* Make the top 4 * width cells hidden with hidden attribute */
   .holdingGrid {
-    /* display: none */
-    background-color: peachpuff;
+    display: none
+    /* background-color: peachpuff; */
   }
 
 /** Assignable classes for pieces: */
