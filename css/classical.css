@@ -3,7 +3,8 @@
     box-sizing: border-box;
     text-align: center;
     font-size: 14px;
-    font-family: 'Rubik Mono One', monospace;
+    font-family: 'Quattrocento', serif;
+    font-weight: bold;
   }
 
   body {
@@ -14,6 +15,18 @@
     justify-content: center;
   }
 
+  @media screen and (min-width: 1200px) {
+    body {
+      background-image: url(../assets/colosseum.jpg);
+      background-size: cover;
+      background-repeat: no-repeat
+    }
+  }
+  
+
+  /* Attribution to add to body when page wide enough: */
+  /* Photo by <a href="https://unsplash.com/@bdv91?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Dmitry Bukhantsov</a> on <a href="https://unsplash.com/photos/the-inside-of-an-old-building-with-a-lot-of-windows-DexkTCvt-eA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+   */
 
   section {
     background-color: rgb(157, 157, 157);
@@ -39,7 +52,6 @@
 
   h1 {
     font-size: 3em;
-    font-family: 'Rubik Mono One', monospace;
   }
 
   h2 {
@@ -50,7 +62,7 @@
   .dropGrid {
     height: 100%;
     aspect-ratio: 0.5;
-    background-color: black;
+    background-color: rgb(131, 127, 115);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -147,9 +159,9 @@
     color: rgba(0,0,0,0)
   }
 
-  .classicalJokes {
+  /* .classicalJokes {
     display: none
-  }
+  } */
 
   /* Make the top 4 * width cells hidden with hidden attribute */
   .holdingGrid {
@@ -249,17 +261,3 @@
     grid-template-columns: 50% 50%;
   }
 }
-
-/** Utilised in classical.css file instead
-  /* @media screen and (min-width: 1200px) {
-    .classicalBody{
-      background-image: url(../assets/colosseum.jpg);
-      background-size: cover;
-      background-repeat: no-repeat
-    }
-  } */
-  
-
-  /* Attribution to add to body when page wide enough: */
-  /* Photo by <a href="https://unsplash.com/@bdv91?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Dmitry Bukhantsov</a> on <a href="https://unsplash.com/photos/the-inside-of-an-old-building-with-a-lot-of-windows-DexkTCvt-eA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-   */

@@ -9,6 +9,7 @@
 
 // ! Test logging
 
+
 // ! Switching between classic and classical modes
 let mode = 'classic'
 
@@ -19,6 +20,7 @@ const previewGridEl = document.querySelector('.previewGrid')
 const storeGridEl = document.querySelector('.storeGrid')
 let startButton = document.querySelector('.start')
 let classicalStartButton = document.querySelector('.incipere')
+let stylesheetLinked = document.querySelector('#stylesheet')
 
 // Welcome elements that will be hidden on game start
 let welcomeNL = document.querySelectorAll('.welcome')
@@ -196,6 +198,10 @@ function keyupFunctions(evt){
     unMuteMusicFn()
   } else if (key === 'KeyS'){
     storePieceFn()
+  } else if (key === 'KeyI'){
+    startGameClassical()
+  } else if (key === 'KeyT'){
+    timeTravelFn()
   }
 }
 
@@ -220,12 +226,38 @@ function startGameClassic() {
 }
 
 function startGameClassical() {
-  mode = 'classical'
-  let audio = document.querySelector('#typeAMusic')
-  audio.src='assets/classicalMusic.mp3'
-  let body = document.querySelector('body')
-  body.classList.add('classicalBody')
+  timeTravelFn()
   startGame()
+}
+
+function timeTravelFn (){
+  if (mode == 'classic') {
+    mode = 'classical'
+    let audio = document.querySelector('#typeAMusic')
+    audio.src='assets/classicalMusic.mp3'
+    if (!musicMuted){
+      audio.play()
+    }
+    let body = document.querySelector('body')
+    body.classList.add('classicalBody')
+    stylesheetLinked.href = ('css/classical.css')
+    let logo = document.querySelector('.logo')
+    logo.src = 'assets/classicalTetrisLogo.png'
+  } else {
+    console.log('SWITCHING BACK TO CLASSIC')
+    mode = 'classic'
+    let audio = document.querySelector('#typeAMusic')
+    audio.src='assets/typeAMusic.mp3'
+    if (!musicMuted){
+      audio.play()
+    }
+    let body = document.querySelector('body')
+    body.classList.remove('classicalBody')
+    stylesheetLinked.href = ('css/main.css')
+    let logo = document.querySelector('.logo')
+    logo.src = 'assets/logo.png'
+  }
+  console.log('Game mode is now: ', mode)
 }
 
 function startGame () {
@@ -504,15 +536,21 @@ function pauseGameFn(){
   // keyupFunctions(evt)
   window.addEventListener('keyup', keyupFunctions)
   window.addEventListener('keydown', keydownFunctions)
+  controlButtons[6].removeEventListener('click',pauseGameFn)
+  controlButtons[6].addEventListener('click',unPauseGameFn)
 }
 function unPauseGameFn(){
-  console.log('Executing unpause game function')
-  const Sound = document.querySelector('#typeAMusic')
-  if (!musicMuted) {
-    Sound.play()
+  if (gamePaused){
+    console.log('Executing unpause game function')
+    const Sound = document.querySelector('#typeAMusic')
+    if (!musicMuted) {
+      Sound.play()
+    }
+    gamePaused = false
+    controlButtons[6].removeEventListener('click',unPauseGameFn)
+    controlButtons[6].addEventListener('click',pauseGameFn)
+    autoMoveDownFn()
   }
-  gamePaused = false
-  autoMoveDownFn()
 }
 
 // * Mute/Unmute
@@ -520,11 +558,15 @@ function muteMusicFn(){
   const Sound = document.querySelector('#typeAMusic')
   Sound.pause()
   musicMuted = true
+  controlButtons[7].removeEventListener('click',muteMusicFn)
+    controlButtons[7].addEventListener('click',unMuteMusicFn)
 }
 function unMuteMusicFn(){
   const Sound = document.querySelector('#typeAMusic')
   Sound.play()
   musicMuted = false
+  controlButtons[7].removeEventListener('click',unMuteMusicFn)
+    controlButtons[7].addEventListener('click',muteMusicFn)
 }
 
 // * Store/Retrieve piece
@@ -698,7 +740,7 @@ function gameOverFn() {
   startButton = document.querySelector('.start')
   startButton.addEventListener('click',startGame)
   dropCells = []
-  dropGridEl = document.querySelector('.dropGrid') // New Code
+  dropGridEl = document.querySelector('.dropGrid')
   welcomeNL.forEach(function(element){
     element.setAttribute('hidden', false)
   })
@@ -709,24 +751,16 @@ function gameOverFn() {
 function completeLineCheckFn() {
   // Iterate over rows; within this, iterate over cells
   for (let row = 4; row < (2 * width + 4); row++){
-    // console.log(`Iterating over row ${row}`)
     let landedCells = 0
     // This runs width times for each row
     for (let cell = row * width; cell < (row + 1) * width; cell++){
-      // console.log('Current value & typeof cell: ', cell, typeof(cell))
-      // console.log('Current dropCells cell being iterated over: ', dropCells[cell])
       // Can replace ternary below with a &&
       dropCells[cell].classList?.contains('landed') ? landedCells += 1 : landedCells
       // console.log('Landed cells count: ', landedCells)
     }
-    //! Change this below to completed = 3 while testing
     if (landedCells === width){
-    // if (landedCells >= 3){
-      // console.log('Complete line function about to be executed')
-      // console.log('Landed cells total/row: ',landedCells,' row: ',row)
       completeLineFn(row)
       landedCells = 0
-      // console.log('Landed cells after reset: ',landedCells)
     }
   }
 }
@@ -751,8 +785,6 @@ function completeLineFn(row){
     dropCells[cell].className = ''
     dropCells[cell].remove()
   }
-  // const landedCellsRemaining = dropCells.reduce((acc, cell) => cell.classList.contains('landed') ? acc + 1 : acc, 0)
-  // console.log('Landed cells remaining: ', landedCellsRemaining)
   // Shift cells above down a row --> Starting from cell 4*width & ending at row just deleted, increase the ID and contents of each cell by width)
   for (let cellToShift = 4 * width; cellToShift < row * width; cellToShift++ ){
     const idToShift = parseInt(dropCells[cellToShift].id)
@@ -769,17 +801,12 @@ function addLineFn(){
     const newCell = document.createElement('div')
     newCell.innerText = cellToAdd
     newCell.id = cellToAdd
-    // newCell.classList.add('newCell')
     newCell.style.height = `${100 / (2 * width)}%`
     newCell.classList.add('dropCell')
-    // console.log('New cell: ', newCell)
-    // console.log('Drop cells: ', dropCells)
     const currentCell = dropCells[4 * width]
-    // console.log('Current cell to insert before: ', currentCell)
     dropGridEl.insertBefore(newCell, currentCell)
   }
   dropCells = document.querySelectorAll('.dropCell')
-  console.log(dropCells)
 }
 
 //! Events
@@ -792,7 +819,7 @@ window.addEventListener('keyup', keyupFunctions)
 window.addEventListener('keydown', keydownFunctions)
 
 // ! Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key; this is broken
-const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','unPauseButton','muteButton','unMuteButton']
+const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','muteButton','storeButton','timeTravelButton']
 const controlButtons = []
 controlNames.forEach(function(button){
   button = document.querySelector(`#${button}`)
@@ -807,9 +834,9 @@ controlButtons[3].addEventListener('click',hardDropFn)
 controlButtons[4].addEventListener('click',rotateNormalFn)
 controlButtons[5].addEventListener('click',rotateBackFn)
 controlButtons[6].addEventListener('click',pauseGameFn)
-controlButtons[7].addEventListener('click',unPauseGameFn)
-controlButtons[8].addEventListener('click',muteMusicFn)
-controlButtons[9].addEventListener('click',unMuteMusicFn)
+controlButtons[7].addEventListener('click',muteMusicFn)
+controlButtons[8].addEventListener('click',storePieceFn)
+controlButtons[9].addEventListener('click',timeTravelFn)
 
 if (!musicMuted) {
   controlButtons[7].addEventListener('click',muteMusicFn)

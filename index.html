@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classical Tetris</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css" id="stylesheet">
     <script defer src="js/main.js"></script> 
     <script src="https://kit.fontawesome.com/d0ea79552d.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
     <main class="dropGrid">
       <section class="welcome">
         <h1 class="welcome">Welcome to Classical Tetris</h1>
-        <h2 class="welcome">Press start/incipere or the return key to begin</h2>
+        <h2 class="welcome">Press start/incipere or the return/I key to begin</h2>
         <button class="welcome start">START</button>
         <button class="welcome incipere">INCIPERE</button>
       </section>
@@ -30,10 +30,10 @@
         <button id="spaceButton">Space</button><p>Drop piece</p>
         <p>Rotate</p><button id="upButton">Up</button>
         <button id="shiftButton">Shift</button><p>Rotate back</p>
-        <p>Pause</p><button id="pauseButton">P</button>
-        <button id="unPauseButton">P</button><p>Unpause</p>
-        <p>Mute</p><button id="muteButton">M</button>
-        <button id="unMuteButton">M</button><p>Unmute</p>
+        <p>Pause/ Unpause</p><button id="pauseButton">P</button>
+        <button id="muteButton">M</button><p>Mute/ Unmute</p>
+        <p>Store/ Retrieve</p><button id="storeButton">S</button>
+        <button id="timeTravelButton">T</button><p>Time Travel</p>
       </section>
       <section class="metrics">
         <section class="highScore">
@@ -55,7 +55,7 @@
         </section>
       </section>
       <section class="credits">
-        <p>A Code with Hart creation</p>
+        <p>A Code with Hart creation<span class = "classicalJokes"><br>Founded: 600BC</span></p>
       </section>
     </section>
     <audio src="assets/typeAMusic.mp3" loop id="typeAMusic"></audio>
