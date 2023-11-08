@@ -598,6 +598,15 @@ console.log('Rotation move array: ',rotationMoveArray)
 // Anticlockwise transformations:
 const rotationMoveAntiArray = [(3*width+3),(3*width+1),(2*width+2),(2*width),(width+1),(2),(-width+3),(3*width-3),(2*width-2),(width-1),(0),(-width+1),(-2*width+2),(-3*width+3),(width-3),(-2),(-width-1),(-2*width),(-2*width-2),(-3*width-1),(-3*width-3),]
 
+//* Rotate function needs 2 preceding functions so it can be accessed via button event listeners
+function rotateNormalFn(){
+  rotateFn(rotationMoveArray)
+}
+
+function rotateBackFn(){
+  rotateFn(rotationMoveAntiArray)
+}
+
 function rotateFn(rotationArray){
   if (!gamePaused){
   console.log('ROTATE FUNCTION EXECUTING')
@@ -795,8 +804,8 @@ controlButtons[0].addEventListener('click',arrowLeftFn)
 controlButtons[1].addEventListener('click',arrowRightFn)
 controlButtons[2].addEventListener('click',moveDownFn)
 controlButtons[3].addEventListener('click',hardDropFn)
-// controlButtons[4].addEventListener('click',rotateFn(rotationMoveArray))
-// controlButtons[5].addEventListener('click',rotateFn(rotationMoveAntiArray))
+controlButtons[4].addEventListener('click',rotateNormalFn)
+controlButtons[5].addEventListener('click',rotateBackFn)
 controlButtons[6].addEventListener('click',pauseGameFn)
 controlButtons[7].addEventListener('click',unPauseGameFn)
 controlButtons[8].addEventListener('click',muteMusicFn)
