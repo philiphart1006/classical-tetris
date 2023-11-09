@@ -231,9 +231,9 @@
     }
   
     .normalMode {
-      display: none
+      display: none !important;
     }
-    
+
     body {
       display: grid;
       grid-template-rows: 70% 20%
@@ -252,6 +252,7 @@
       background: linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('../assets/classicalLogoBG.png');
       background-size: contain;
       /* background-repeat: no-repeat; */
+      margin-bottom: 1em;
     }
     
   
