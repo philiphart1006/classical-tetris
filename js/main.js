@@ -52,7 +52,7 @@ let interval = 0
 let level = 1
 let timeInterval = 1000
 const starterSquare = width * 3.5 - 1
-let gameOver = false
+let gameOver = true
 let gamePaused = false
 let musicMuted = false
 
@@ -180,7 +180,7 @@ function createPiece(cells){
 function keyupFunctions(evt){
   console.log('Keyup function triggered: ',evt)
   const key = evt.code
-  if (key === 'Enter'){
+  if (key === 'Enter' && gameOver){
     startGame()
   } else if (key === 'ArrowUp'){
     rotateFn(rotationMoveArray)
@@ -198,7 +198,7 @@ function keyupFunctions(evt){
     unMuteMusicFn()
   } else if (key === 'KeyS'){
     storePieceFn()
-  } else if (key === 'KeyI'){
+  } else if (key === 'KeyI' && gameOver){
     startGameClassical()
   } else if (key === 'KeyT'){
     timeTravelFn()
@@ -265,6 +265,7 @@ function timeTravelFn (){
 }
 
 function startGame () {
+  gameOver = false
   hideWelcome()
   dropGridEl.innerHTML = ''
   createMainGrid()

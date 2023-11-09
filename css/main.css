@@ -46,6 +46,11 @@
     font-size: 1.5em
   }
 
+  /* Values for buttons on normal mode should equate to the keyboard code */
+  .narrowMode {
+    display: none
+  }
+
 /** Main elements  */
   .dropGrid {
     height: 100%;
@@ -104,6 +109,10 @@
     font-size: 0.6em;
     padding: 0;
     height: 100%
+  }
+
+  button span{
+    font-size: 1em;
   }
 
   .controls {
@@ -183,6 +192,16 @@
   }
 
   @media screen and (max-width: 800px) {
+
+    /* Values for buttons on narrow mode should equate to the function performed */
+  .narrowMode {
+    display: block
+  }
+
+  .normalMode {
+    display: none
+  }
+
     body {
       display: grid;
       grid-template-rows: 70% 20%
