@@ -677,7 +677,7 @@ function rotateFn(rotationArray){
     const modNewCellId = newCellId % width
     modArray.push(modNewCellId)
     // Check if new cells contain landed pieces; if so, don't allow rotate
-    if (dropCells[newCellId].classList.contains('landed')){
+    if (dropCells[newCellId]?.classList.contains('landed')){
       landedPieceAdjacent = true
     }
   })

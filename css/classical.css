@@ -29,9 +29,10 @@
     justify-content: center;
   }
 
+  /* ! Widescreen mode */
   @media screen and (min-width: 1200px) {
     body {
-      background-image: url(../assets/colosseum.jpg);
+      background: linear-gradient(rgba(255,255,255,0.7),rgba(255,255,255,0.7)),url('../assets/colosseum.jpg');
       background-size: cover;
       background-repeat: no-repeat
     }
@@ -136,14 +137,13 @@
   }
 
   .logo {
-    width: 60%;
+    width: 40%;
     align-self: center;
-    margin-bottom: 3em;
   }
 
 
   .controls button {
-    font-size: 0.6em;
+    font-size: 1em;
     padding: 0;
     height: 100%
   }
@@ -224,6 +224,7 @@
     background-color: var(--brightRed);
   }
 
+  /* ! Narrow mode */
   @media screen and (max-width: 700px) {
 
     .narrowMode {
