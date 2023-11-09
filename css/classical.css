@@ -1,3 +1,16 @@
+/* * Roman colour scheme from https://www.schemecolor.com/romans.php*/
+:root {
+  --brightRed: #D32929;
+  --mustard: #FACD1E;
+  --offWhite: #FFF5E6;
+  --straw: #E5DBB7;
+  --darkStraw: #CAC198;
+  --darkRed:#7F2122;
+
+}
+/* To use: 'color: var(--brighRed)' */
+
+
 * {
     /* height & width now includes border & padding */
     box-sizing: border-box;
@@ -5,12 +18,13 @@
     font-size: 14px;
     font-family: 'Quattrocento', serif;
     font-weight: bold;
+    color: var(--darkRed)
   }
 
   body {
     height: 100vh;
     margin: 0;
-    background-color: rgb(33, 58, 33);
+    background-color: var(--offWhite);
     display: flex;
     justify-content: center;
   }
@@ -29,12 +43,12 @@
    */
 
   section {
-    background-color: rgb(157, 157, 157);
+    background-color: var(--straw);
   }
 
 /** Start elements */
   section.welcome{
-    background-color: #a5a5a5a4;
+    background-color: var(--darkStraw);
     padding: 1em
   }
 
@@ -63,7 +77,7 @@
     height: 100%;
     aspect-ratio: 0.5;
     /* background-color: rgb(131, 127, 115); */
-    background: linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('../assets/romanChurch.jpg');
+    background: linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('../assets/romanTemple.jpg');
     /* background-image: url(../assets/romanChurch.jpg); */
       background-size: cover;
       background-repeat: no-repeat;
@@ -83,12 +97,13 @@
   div {
     border: solid;
     border-width: 1px;
-    border-color: rgba(43, 43, 43, 0.482)
+    border-color: rgba(43, 43, 43, 0.482);
+    color: rgba(0,0,0,0)
   }
 
 /** Sidebar and contents */
   .sidebar {
-    background-color: darkgray;
+    background-color: var(--straw);
     height: 100%;
     width: 50%;
     max-width: 350px;
@@ -103,7 +118,7 @@
   }
 
   .sidebar p {
-    background-color: cadetblue;
+    background-color: var(--darkStraw);
     margin: 0;
     padding: 0.5em;
     min-height: 4em;
@@ -155,7 +170,7 @@
   }
 
   .futureGrid {
-    background-color: black;
+    background-color: var(--darkStraw);
     width: 80%;
     margin: 1em 1em;
     aspect-ratio: 1;
@@ -177,32 +192,32 @@
 /** Assignable classes for pieces: */
 
   .piece.typeStraight{
-    background-color: aqua;
+    background-color: #bad9da;
   }
   
   .piece.typeReverseL{
-    background-color: blue;
+    background-color: #335c67;
   }
   .piece.typeL{
-    background-color: orange;
+    background-color: #e09f3e;
   }
   .piece.typeSquare{
-    background-color: yellow;
+    background-color: var(--mustard);
   }
   .piece.typeZ{
-    background-color: greenyellow;
+    background-color: #80bd18;
   }
   .piece.typeT{
-    background-color: purple;
+    background-color: #53246a;
   }
   .piece.typeReverseZ{
-    background-color: red;
+    background-color: var(--brightRed);
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 700px) {
     body {
       display: grid;
-      grid-template-rows: 60% 20%
+      grid-template-rows: 70% 20%
     }
   
     main {
@@ -213,6 +228,13 @@
     h1 {
       font-size: 2em;
     }
+
+    .dropGrid{
+      background: linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('../assets/classicalLogoBG.png');
+      background-size: contain;
+      /* background-repeat: no-repeat; */
+    }
+    
   
     .logo, .credits {
       display: none
@@ -241,6 +263,7 @@
   
     .metrics * {
       font-size: 1em;
+      width: 98%;
     }
 
     .metrics p {
@@ -249,7 +272,7 @@
     }
   
     .futureGrids {
-      margin: 0em 0.5em;
+      margin: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-around;

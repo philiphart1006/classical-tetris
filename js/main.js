@@ -243,6 +243,8 @@ function timeTravelFn (){
     stylesheetLinked.href = ('css/classical.css')
     let logo = document.querySelector('.logo')
     logo.src = 'assets/classicalTetrisLogo.png'
+    let favicon = document.querySelector('.favicon')
+    favicon.href="assets/classicalFavi.ico"
   } else {
     console.log('SWITCHING BACK TO CLASSIC')
     mode = 'classic'
@@ -256,6 +258,8 @@ function timeTravelFn (){
     stylesheetLinked.href = ('css/main.css')
     let logo = document.querySelector('.logo')
     logo.src = 'assets/logo.png'
+    let favicon = document.querySelector('.favicon')
+    favicon.href='assets/favicon.ico'
   }
   console.log('Game mode is now: ', mode)
 }
@@ -737,6 +741,10 @@ function gameOverFn() {
   dropGridEl.innerHTML = '<section class = "welcome"><h1 class = "welcome">GAME OVER<h1><button class="welcome start">PLAY AGAIN</button></section>'
   gameOver = true
   clearInterval(interval)
+  // Remove stored piece
+  storeCells.forEach(function(cell){
+    cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+    })
   startButton = document.querySelector('.start')
   startButton.addEventListener('click',startGame)
   dropCells = []

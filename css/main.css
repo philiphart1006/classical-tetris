@@ -173,19 +173,19 @@
     background-color: yellow;
   }
   .piece.typeZ{
-    background-color: greenyellow;
+    background-color: red;
   }
   .piece.typeT{
     background-color: purple;
   }
   .piece.typeReverseZ{
-    background-color: red;
+    background-color: greenyellow;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     body {
       display: grid;
-      grid-template-rows: 60% 20%
+      grid-template-rows: 70% 20%
     }
   
     main {
@@ -224,6 +224,7 @@
   
     .metrics * {
       font-size: 1em;
+      width: 98%;
     }
 
     .metrics p {
@@ -231,7 +232,7 @@
     }
   
     .futureGrids {
-      margin: 0em 0.5em;
+      margin: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
