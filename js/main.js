@@ -379,7 +379,7 @@ function moveDownFn(){
       cell.classList.add('landed')
     })
     clearInterval(interval)
-    timeInterval = 1000 * (0.95 ** (level - 1))
+    timeInterval = 1000 * (0.95 ** (level))
     autoMoveDownFn()
     activateHoldingFn()
   }
@@ -524,7 +524,7 @@ function hardDropFn(){
   console.log('HARD DROP FUNCTION ACTIVATED')
   clearInterval(interval)
   console.log('Time interval at start of hard drop function: ', timeInterval)
-  timeInterval = 1
+  timeInterval = 1 * (0.95 ** parseInt(level))
   autoMoveDownFn()
   console.log('Time interval at end of hard drop function: ', timeInterval)
   }
@@ -654,7 +654,8 @@ function rotateBackFn(){
 }
 
 function rotateFn(rotationArray){
-  if (!gamePaused){
+  const holdingBayNL = document.querySelectorAll('.holdingGrid.piece.moving')
+  if (!gamePaused && holdingBayNL.length == 0){ //! Second part of this conditional is new as a bug fix
   console.log('ROTATE FUNCTION EXECUTING')
   let type
   let pieceAtEdge = false
@@ -803,6 +804,8 @@ function completeLineFn(row){
   dropCells = document.querySelectorAll('.dropCell')
   //Create and add width cells before index 5*width
   addLineFn()
+  holdingBayEmptyFn() //! This is an attempted bug fix
+  activateHoldingFn() //! This is an attempted bug fix
 }
 // * Adds new line to top
 function addLineFn(){
