@@ -325,12 +325,15 @@ function activateHoldingFn (){
 // Check class at position = piece’s position’s index + width; if any of them are equal to staticPiece, change class to staticPiece & change the target of the dropping interval to next piece
 // This should trigger the next piece to start dropping by changing its class from holding to moving
 function moveDownFn(){
+  //Only run if game is not paused
   if (!gamePaused){
   console.log('MOVE DOWN FUNCTION EXECUTED')
+  // Increase score and select active tetrimino
   score += 1
   scoreEl.innerText = score
   let pieceAtBottom = false
   activeTetNL = document.querySelectorAll('.moving')
+  // Check if tetrimino is at bottom or on top of landed cell
   activeTetNL.forEach(function(cell){
     
     // Add in condition here that checks if the classlist of the cell below contains a landed piece
@@ -343,25 +346,22 @@ function moveDownFn(){
       pieceAtBottom = true
     }
   })
+  // If tetrimino is not at bottom, move it down one. Else, de-activate it and activate tetrimino in holding bay
   if (pieceAtBottom === false) {
     let type = 'typeStraight'
     let axisIndex
-    activeTetNL = document.querySelectorAll('.moving') // Not sure this line is doing anything
+    activeTetNL = document.querySelectorAll('.moving')
     activeTetNL.forEach(function(cell){
       cell.classList.remove('moving','piece')
       // type = cell.classList[cell.classList.length - 1]
       // Extract type of current cell and store in type variable
-      // console.log("Cell class list: ", cell.classList)
       cellClassArray = Array.from(cell.classList)
       const cellClassArrayFiltered = cellClassArray.filter(function(className) {
         return className.includes('type')
       })
       type = cellClassArrayFiltered.toString()
-      // console.log(cellClassArrayFiltered)
-      // console.log(type)
       // If classlist contains axis, saves this index - 1 as a variable
       if (cell.classList.contains('axis')){
-        // console.log('FOUND AN AXIS PIECE AT')
         axisIndex = (parseInt(cell.id) + width)
         // console.log(axisIndex)
       }
@@ -370,13 +370,10 @@ function moveDownFn(){
     activeTetNL.forEach(function(cell){
       const newCellId = parseInt(cell.id) + width
       dropCells[newCellId]?.classList.add('piece','moving',`${type}`)
-    // dropCells[cell.id + width].classList.add('active','piece','typeSquare')
     })
-    // console.log(axisIndex)
-    // console.log(dropCells[axisIndex])
     dropCells[axisIndex].classList.add('axis')
   } else {
-    activeTetNL = document.querySelectorAll('.moving') // Not sure this line is doing anything
+    activeTetNL = document.querySelectorAll('.moving')
     activeTetNL.forEach(function(cell){
       cell.classList.remove('moving')
       cell.classList.add('landed')
@@ -386,6 +383,7 @@ function moveDownFn(){
     autoMoveDownFn()
     activateHoldingFn()
   }
+  // Check if a line is complete or the game is over:
   completeLineCheckFn()
   gameOverCheckFn()
   holdingBayEmptyFn()
@@ -789,13 +787,14 @@ function completeLineFn(row){
   level = parseInt(score / (10 * width))
   levelEl.innerText = level
   // Take 10% off automated movement interval each level
-  timeInterval = 0.95 ** (level - 1)
+  timeInterval = 1000 * (0.95 ** (level))
   // Remove completed row
   for (let cell = row * width; cell < (row + 1) * width; cell++){
     dropCells[cell].className = ''
     dropCells[cell].remove()
   }
   // Shift cells above down a row --> Starting from cell 4*width & ending at row just deleted, increase the ID and contents of each cell by width)
+
   for (let cellToShift = 4 * width; cellToShift < row * width; cellToShift++ ){
     const idToShift = parseInt(dropCells[cellToShift].id)
     dropCells[cellToShift].id = idToShift + width

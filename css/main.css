@@ -160,7 +160,7 @@
     display: none
   }
 
-  /* Make the top 4 * width cells hidden with hidden attribute */
+  /**! Make the top 4 * width cells hidden with hidden attribute */
   .holdingGrid {
     display: none
     /* background-color: peachpuff; */
