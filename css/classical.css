@@ -215,13 +215,13 @@
     background-color: var(--mustard);
   }
   .piece.typeZ{
-    background-color: #80bd18;
+    background-color: var(--brightRed);
   }
   .piece.typeT{
     background-color: #53246a;
   }
   .piece.typeReverseZ{
-    background-color: var(--brightRed);
+    background-color: #80bd18;
   }
 
   /* ! Narrow mode */

@@ -9,7 +9,6 @@
 
 // ! Test logging
 
-
 // ! Switching between classic and classical modes
 let mode = 'classic'
 
@@ -279,6 +278,8 @@ function startGame () {
     Sound.play()
   }
 }
+
+
 //Game setup functions
 // Hides welcome class elements by adding hidden attribute to welcome class node list
 function hideWelcome(){
@@ -381,7 +382,7 @@ function moveDownFn(){
       cell.classList.add('landed')
     })
     clearInterval(interval)
-    timeInterval = 1000 * (0.9 ** (level - 1))
+    timeInterval = 1000 * (0.95 ** (level - 1))
     autoMoveDownFn()
     activateHoldingFn()
   }
@@ -788,7 +789,7 @@ function completeLineFn(row){
   level = parseInt(score / (10 * width))
   levelEl.innerText = level
   // Take 10% off automated movement interval each level
-  timeInterval = 0.9 ** (level - 1)
+  timeInterval = 0.95 ** (level - 1)
   // Remove completed row
   for (let cell = row * width; cell < (row + 1) * width; cell++){
     dropCells[cell].className = ''
