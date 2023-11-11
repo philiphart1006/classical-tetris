@@ -1,17 +1,3 @@
-// ! Test keys:
-// F -> create square piece
-// G -> create L piece
-// H -> create reverse L piece
-// Z -> start automovedown
-// X -> convert holding piece to active
-// S -> store
-// P -> pause/un-pause
-
-// ! Test logging
-
-// ! Switching between classic and classical modes
-let mode = 'classic'
-
 // ! Elements
 // Get DOM elements for main grid, preview grid, start button
 let dropGridEl = document.querySelector('.dropGrid')
@@ -24,7 +10,7 @@ let stylesheetLinked = document.querySelector('#stylesheet')
 // Welcome elements that will be hidden on game start
 let welcomeNL = document.querySelectorAll('.welcome')
 
-//Sidebar scores
+// Sidebar scores
 const scoreEl = document.querySelector('#currentScoreId')
 const highScoreEl = document.querySelector('#highScoreId')
 const levelEl = document.querySelector('#levelId')
@@ -35,31 +21,35 @@ let activeTetNL = []
 let gameOverNL = []
 let storeTetNL = []
 
-// Get High SCore from local
+// Get High Score from local
 let highScore = localStorage.getItem('tetrisHighScore')
-console.log('RETRIEVED HIGH SCORE: ', highScore)
 highScoreEl.textContent = highScore
 
 // ! Variables
-// Starting values on page load; make available as global variables
+
+// * Starting variables that could be customised by user on page load to change grid size & starting difficulty
+const width = 10
+let timeInterval = 1000
+
+// *  Starting values on page load; make available as global variables
+const previewWidth = 4
 const previewCells = []
 const storeCells = []
 let dropCells = []
-const width = 10
 let score = 0
 let interval = 0
 let level = 1
-let timeInterval = 1000
 const starterSquare = width * 3.5 - 1
 let gameOver = true
 let gamePaused = false
 let musicMuted = false
 
-// ! Preview Grid
-// Create a preview grid that is 4x4 to display upcoming tetromino
-const previewWidth = 4
-const previewCellCount = previewWidth * previewWidth
+// * Switching between classic and classical modes
+let mode = 'classic'
 
+// ! Executions (pre-game setup)
+// * Create a preview grid that is 4x4 to display upcoming tetromino
+const previewCellCount = previewWidth * previewWidth
 //Function to create grid cells & append to existing grid
 function createPreviewGrid(grid, cellsArray){
   for (let i = 0; i < previewCellCount; i++) {
@@ -75,10 +65,8 @@ function createPreviewGrid(grid, cellsArray){
   }
 }
 
-// ! Main Grid
-// Create a grid that is twice as high with 4 holding bay rows at the top
+// * Create a main grid that is twice as high as it is wide with 4 holding bay rows at the top
 const cellCount = width * ((width * 2) + 4)
-
 //Function to create grid cells & append to existing grid
 function createMainGrid() {
   for (let i = 0; i < cellCount; i++) {
@@ -98,8 +86,7 @@ function createMainGrid() {
   }
 }
 
-
-// ! Piece creation
+// ! Executions (piece creation)
 // One for each available tetromino (7)
 //Declare type & starters array as global variables to allow them to be reached by multiple functions
 // Adds relevant classes to four cells in dropGrid and previewGrid: .piece .preview/.holding .type*
@@ -107,60 +94,51 @@ let type
 let Starters = []
 const shapesArray = ['Square','L','ReverseL','Z','ReverseZ','T','Straight']
 
-function createRandomPiece(){
-  const shape = shapesArray[Math.floor(Math.random() * shapesArray.length)]
-  console.log('shape: ', shape)
-  const fnToRun = `setPiece${shape}`
-  eval(fnToRun + '(dropCells)')
-  previewCells.forEach(function(cell){
-  cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
-})
-  eval(fnToRun + '(previewCells)')
-} 
-//Square (F)
+// * Determines starting cell of each piece in dropGrid & previewGrids based on tet shape
+//Square
 function setPieceSquare(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - width + 1)] : Starters = [9, 10, 13, 14]
   type = 'typeSquare'
   createPiece(cells)
 }
-
-//L (G)
+//L
 function setPieceL(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - 2 * width)] : Starters = [5, 9, 13, 14]
   type = 'typeL'
   createPiece(cells)
 }
-//ReverseL (H)
+//ReverseL
 function setPieceReverseL(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare - 1), (starterSquare - width), (starterSquare - 2 * width)] : Starters = [5, 9, 12, 13]
   type = 'typeReverseL'
   createPiece(cells)
 }
-//Z (J)
+//Z
 function setPieceZ(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - width - 1)] : Starters = [8, 9, 13, 14]
   type = 'typeZ'
   createPiece(cells)
 }
-//ReverseZ (K)
+//ReverseZ
 function setPieceReverseZ(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare - 1), (starterSquare - width), (starterSquare - width + 1)] : Starters = [9, 10, 12, 13]
   type = 'typeReverseZ'
   createPiece(cells)
 }
-//T (L)
+//T
 function setPieceT(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare + 1), (starterSquare - width), (starterSquare - 1)] : Starters = [12, 9, 13, 14]
   type = 'typeT'
   createPiece(cells)
 }
-//Straight (;)
+//Straight
 function setPieceStraight(cells) {
   cells === dropCells ? Starters = [starterSquare, (starterSquare - 1), (starterSquare + 1), (starterSquare + 2)] : Starters = [12, 13, 14, 15]
   type = 'typeStraight'
   createPiece(cells)
 }
-//Create piece
+
+// * Adds appropriate classes to starting cells/divs
 function createPiece(cells){
   Starters.forEach(function(StarterIdx){
     if (cells === dropCells){cells[StarterIdx].classList.add('piece',`${type}`,'hold')
@@ -172,50 +150,17 @@ function createPiece(cells){
   })
 }
 
-// ! Executions
+//  * Selects a shape at random and runs the createPiece function within both dropGrid & previewGrid
+function createRandomPiece(){
+  const shape = shapesArray[Math.floor(Math.random() * shapesArray.length)]
+  const fnToRun = `setPiece${shape}`
+  eval(fnToRun + '(dropCells)')
+  previewCells.forEach(function(cell){
+  cell.classList.remove('piece','typeStraight','typeZ','typeReverseZ','typeT','typeSquare','typeL','typeReverseL')
+})
+  eval(fnToRun + '(previewCells)')
+} 
 
-// * Keyboard triggered functions
-// Keyup for actions that can only be completed once per key click
-function keyupFunctions(evt){
-  console.log('Keyup function triggered: ',evt)
-  const key = evt.code
-  if (key === 'Enter' && gameOver){
-    startGame()
-  } else if (key === 'ArrowUp'){
-    rotateFn(rotationMoveArray)
-  } else if (key === 'ShiftRight'){
-    rotateFn(rotationMoveAntiArray)
-  } else if (key === 'Space'){
-    hardDropFn()
-  } else if (key === 'KeyP' && !gamePaused) {
-    pauseGameFn()
-  } else if (key === 'KeyP' && gamePaused){
-    unPauseGameFn()
-  } else if (key === 'KeyM' && !musicMuted){
-    muteMusicFn()
-  } else if (key === 'KeyM' && musicMuted){
-    unMuteMusicFn()
-  } else if (key === 'KeyS'){
-    storePieceFn()
-  } else if (key === 'KeyI' && gameOver){
-    startGameClassical()
-  } else if (key === 'KeyT'){
-    timeTravelFn()
-  }
-}
-
-// Keydown for actions that can be repeated/continued by holding the key down: down, left, right
-function keydownFunctions(evt){
-  console.log('Keydown function triggered: ', evt)
-  const key = evt.code
-  if (key === 'ArrowDown'){
-    arrowDownFn()
-  } else if (key === 'ArrowLeft'){
-    arrowLeftFn()
-  } else if (key === 'ArrowRight'){
-    arrowRightFn()
-  }
-}
 
 //! Start game
 // Generates preview and main grids by executing these functions
@@ -269,7 +214,6 @@ function startGame () {
   dropGridEl.innerHTML = ''
   createMainGrid()
   startVariables()
-  console.log('GAME STARTED')
   createRandomPiece()
   activateHoldingFn()
   autoMoveDownFn()
@@ -415,25 +359,21 @@ function autoMoveDownFn(){
 }
 
 //! User interactions - translate
-// moveLeft: Triggered by eventlisteners; checks that positionPiecez-c + 1 % width !== 0 → increases positionPiecez-c by one
-// moveRight: checks that positionPiece1-4 % width !== 0 → increases positionPiecec-z- by one
-// moveDown: Each time clicked, increase the currentPositionPiecez-c by width indices for movingPiece class
-// hardDrop: TBC
 
-// Before working on rotate, allow arrow up to move the piece up
-function arrowUpFn(){
-  if (!gamePaused){
-  console.log('ARROW UP FUNCTION EXECUTED')
-  activeTetNL = document.querySelectorAll('.moving')
-  activeTetNL.forEach(function(cell){
-    cell.classList.remove('moving','piece')
-  })
-  activeTetNL.forEach(function(cell){
-    const newCellId = parseInt(cell.id) - width
-    dropCells[newCellId].classList.add('piece','moving',`${type}`)
-  })
-}
-}
+// * This was used during early build to allow pieces to be moved up in the grid for easier testing
+// function arrowUpFn(){
+//   if (!gamePaused){
+//   console.log('ARROW UP FUNCTION EXECUTED')
+//   activeTetNL = document.querySelectorAll('.moving')
+//   activeTetNL.forEach(function(cell){
+//     cell.classList.remove('moving','piece')
+//   })
+//   activeTetNL.forEach(function(cell){
+//     const newCellId = parseInt(cell.id) - width
+//     dropCells[newCellId].classList.add('piece','moving',`${type}`)
+//   })
+// }
+// }
 
 function arrowDownFn(){
   // console.log('ARROW DOWN FUNCTION EXECUTED')
@@ -521,12 +461,9 @@ function arrowRightFn(){
 //  * Drop piece to bottom immediately
 function hardDropFn(){
   if (!gamePaused && !gameOver){
-  console.log('HARD DROP FUNCTION ACTIVATED')
   clearInterval(interval)
-  console.log('Time interval at start of hard drop function: ', timeInterval)
   timeInterval = 1 * (0.95 ** parseInt(level))
   autoMoveDownFn()
-  console.log('Time interval at end of hard drop function: ', timeInterval)
   }
 }
 
@@ -633,8 +570,8 @@ function storePieceFn(){
 
 //! User interactions - rotate
 // Triggered by up key event
-// Needs to check a) which piece b) how much space the piece has
-// Accordingly, will do some fun maths manipulations to each of the 4 piece's currentPosition index. Yay.
+// Needs to check a) which piece b) how much space the piece has (bounds of grid, landed/held pieces in vicinity)
+
 // Array that stores the possible differences between a piece's index and its tetramino's axis piece's index
 const rotationOriginArray = [-3,(-width-2),-2,(-width-1),-1,(width-1),(2*width-1),(-3*width),(-2*width),(-width),0,(width),(2*width),(3*width),(-2*width+1),(-width+1),1,(width+1),2,width+2,3]
 console.log('Rotation origin array: ',rotationOriginArray)
@@ -644,7 +581,8 @@ console.log('Rotation move array: ',rotationMoveArray)
 // Anticlockwise transformations:
 const rotationMoveAntiArray = [(3*width+3),(3*width+1),(2*width+2),(2*width),(width+1),(2),(-width+3),(3*width-3),(2*width-2),(width-1),(0),(-width+1),(-2*width+2),(-3*width+3),(width-3),(-2),(-width-1),(-2*width),(-2*width-2),(-3*width-1),(-3*width-3),]
 
-//* Rotate function needs 2 preceding functions so it can be accessed via button event listeners
+//* Rotate functions 
+// (Main function needs 2 preceding functions so it can be accessed via button event listeners)
 function rotateNormalFn(){
   rotateFn(rotationMoveArray)
 }
@@ -654,12 +592,12 @@ function rotateBackFn(){
 }
 
 function rotateFn(rotationArray){
-  const holdingBayNL = document.querySelectorAll('.holdingGrid.piece.moving')
-  if (!gamePaused && holdingBayNL.length == 0){ //! Second part of this conditional is new as a bug fix
+  if (!gamePaused){
   console.log('ROTATE FUNCTION EXECUTING')
   let type
   let pieceAtEdge = false
   let landedPieceAdjacent = false
+  let heldAxisPieceAdjacent = false
   let modArray = []
   // Fetch activeTetNL again
   activeTetNL = document.querySelectorAll('.moving')
@@ -680,13 +618,17 @@ function rotateFn(rotationArray){
     if (dropCells[newCellId]?.classList.contains('landed')){
       landedPieceAdjacent = true
     }
+    // Check if new cells contain the axis piece of a held tetromino
+    if (newCellId == width * 3.5 - 1){
+      heldAxisPieceAdjacent = true
+    }
   })
   // If this array contains 0 & width, don't allow rotate function
   if(modArray.includes(0) && modArray.includes(width-1)){
     pieceAtEdge = true
   }
 
-  if (!pieceAtEdge && !landedPieceAdjacent){
+  if (!pieceAtEdge && !landedPieceAdjacent && !heldAxisPieceAdjacent){
     // Iterate over each cell within
     // For each cell within, find cellIdx - aIdx & use the rotation arrays to determine the change in index required
     activeTetNL.forEach(function(cell){
@@ -756,16 +698,12 @@ function gameOverFn() {
 }
 
 // * Complete line functions [3]
-// ! This needs fixing; currently, keeps triggering for a row even once it's been removed
 function completeLineCheckFn() {
   // Iterate over rows; within this, iterate over cells
   for (let row = 4; row < (2 * width + 4); row++){
     let landedCells = 0
-    // This runs width times for each row
     for (let cell = row * width; cell < (row + 1) * width; cell++){
-      // Can replace ternary below with a &&
       dropCells[cell].classList?.contains('landed') ? landedCells += 1 : landedCells
-      // console.log('Landed cells count: ', landedCells)
     }
     if (landedCells === width){
       completeLineFn(row)
@@ -773,13 +711,10 @@ function completeLineCheckFn() {
     }
   }
 }
-// * Remove complete line and add empty row to top
-// Remove current line
-// Move all landedPieces with lower indices values along by width number of spaces (= down one row)
-// Increase score by 1 & update score span
-// If score % 10 = 0, increase level by 1, update level span, & decrease timeInterval by 10%?
+// * Remove complete line, shift cells and add empty row to top
 function completeLineFn(row){
   console.log('Complete line function running for row: ', row)
+  // Play success sound
   const Sound = document.querySelector('#successSound')
   if(!musicMuted) {Sound.play()}
   score += width
@@ -804,8 +739,8 @@ function completeLineFn(row){
   dropCells = document.querySelectorAll('.dropCell')
   //Create and add width cells before index 5*width
   addLineFn()
-  holdingBayEmptyFn() //! This is an attempted bug fix
-  activateHoldingFn() //! This is an attempted bug fix
+  holdingBayEmptyFn()
+  activateHoldingFn()
 }
 // * Adds new line to top
 function addLineFn(){
@@ -821,6 +756,52 @@ function addLineFn(){
   dropCells = document.querySelectorAll('.dropCell')
 }
 
+
+
+// ! Events - keyboard events
+// * Keyboard triggered functions
+// Keyup for actions that can only be completed once per key click
+function keyupFunctions(evt){
+  console.log('Keyup function triggered: ',evt)
+  const key = evt.code
+  if (key === 'Enter' && gameOver){
+    startGame()
+  } else if (key === 'ArrowUp'){
+    rotateFn(rotationMoveArray)
+  } else if (key === 'ShiftRight'){
+    rotateFn(rotationMoveAntiArray)
+  } else if (key === 'Space'){
+    hardDropFn()
+  } else if (key === 'KeyP' && !gamePaused) {
+    pauseGameFn()
+  } else if (key === 'KeyP' && gamePaused){
+    unPauseGameFn()
+  } else if (key === 'KeyM' && !musicMuted){
+    muteMusicFn()
+  } else if (key === 'KeyM' && musicMuted){
+    unMuteMusicFn()
+  } else if (key === 'KeyS'){
+    storePieceFn()
+  } else if (key === 'KeyI' && gameOver){
+    startGameClassical()
+  } else if (key === 'KeyT'){
+    timeTravelFn()
+  }
+}
+
+// Keydown for actions that can be repeated/continued by holding the key down: down, left, right
+function keydownFunctions(evt){
+  console.log('Keydown function triggered: ', evt)
+  const key = evt.code
+  if (key === 'ArrowDown'){
+    arrowDownFn()
+  } else if (key === 'ArrowLeft'){
+    arrowLeftFn()
+  } else if (key === 'ArrowRight'){
+    arrowRightFn()
+  }
+}
+
 //! Events
 // Clicking start button; this should also re-set the game
 startButton.addEventListener('click',startGameClassic)
@@ -830,7 +811,7 @@ classicalStartButton.addEventListener('click',startGameClassical)
 window.addEventListener('keyup', keyupFunctions)
 window.addEventListener('keydown', keydownFunctions)
 
-// ! Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key; this is broken
+// * Fetch control button elements & add event listeners that equates clicking relevant button to pressing that key; this is broken
 const controlNames = ['leftButton','rightButton','downButton','spaceButton','upButton','shiftButton','pauseButton','muteButton','storeButton','timeTravelButton']
 const controlButtons = []
 controlNames.forEach(function(button){
@@ -850,6 +831,7 @@ controlButtons[7].addEventListener('click',muteMusicFn)
 controlButtons[8].addEventListener('click',storePieceFn)
 controlButtons[9].addEventListener('click',timeTravelFn)
 
+// Switch musicMuted event listener trigger between mute & unmute
 if (!musicMuted) {
   controlButtons[7].addEventListener('click',muteMusicFn)
 } else {
@@ -857,7 +839,6 @@ if (!musicMuted) {
 }
 
 // ! Page Load
-// Wait until start button is pressed to generate main grid
-// This could trigger the preview grid
+//  * Create preview and store grids on page load
 window.addEventListener('DOMContentLoaded', createPreviewGrid(previewGridEl, previewCells))
 window.addEventListener('DOMContentLoaded', createPreviewGrid(storeGridEl, storeCells))
