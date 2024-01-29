@@ -1,87 +1,8 @@
-<!-- Copy and paste the converted output. -->
-
-<!-----
-
-You have some errors, warnings, or alerts. If you are using reckless mode, turn it off to see inline alerts.
-* ERRORs: 0
-* WARNINGs: 0
-* ALERTS: 30
-
-Conversion time: 8.802 seconds.
-
-
-Using this Markdown file:
-
-1. Paste this output into your source file.
-2. See the notes and action items below regarding this conversion run.
-3. Check the rendered output (headings, lists, code blocks, tables) for proper
-   formatting and use a linkchecker before you publish this page.
-
-Conversion notes:
-
-* Docs to Markdown version 1.0β35
-* Mon Jan 29 2024 06:00:17 GMT-0800 (PST)
-* Source doc: SEI ReadMe: Project 1 (Tetris)
-* This document has images: check for >>>>>  gd2md-html alert:  inline image link in generated source and store images to your server. NOTE: Images in exported zip file from Google Docs may not appear in  the same order as they do in your doc. Please check the images!
-
------>
-
-
-<p style="color: red; font-weight: bold">>>>>>  gd2md-html alert:  ERRORs: 0; WARNINGs: 0; ALERTS: 30.</p>
-<ul style="color: red; font-weight: bold"><li>See top comment block for details on ERRORs and WARNINGs. <li>In the converted Markdown or HTML, search for inline alerts that start with >>>>>  gd2md-html alert:  for specific instances that need correction.</ul>
-
-<p style="color: red; font-weight: bold">Links to alert messages:</p><a href="#gdcalert1">alert1</a>
-<a href="#gdcalert2">alert2</a>
-<a href="#gdcalert3">alert3</a>
-<a href="#gdcalert4">alert4</a>
-<a href="#gdcalert5">alert5</a>
-<a href="#gdcalert6">alert6</a>
-<a href="#gdcalert7">alert7</a>
-<a href="#gdcalert8">alert8</a>
-<a href="#gdcalert9">alert9</a>
-<a href="#gdcalert10">alert10</a>
-<a href="#gdcalert11">alert11</a>
-<a href="#gdcalert12">alert12</a>
-<a href="#gdcalert13">alert13</a>
-<a href="#gdcalert14">alert14</a>
-<a href="#gdcalert15">alert15</a>
-<a href="#gdcalert16">alert16</a>
-<a href="#gdcalert17">alert17</a>
-<a href="#gdcalert18">alert18</a>
-<a href="#gdcalert19">alert19</a>
-<a href="#gdcalert20">alert20</a>
-<a href="#gdcalert21">alert21</a>
-<a href="#gdcalert22">alert22</a>
-<a href="#gdcalert23">alert23</a>
-<a href="#gdcalert24">alert24</a>
-<a href="#gdcalert25">alert25</a>
-<a href="#gdcalert26">alert26</a>
-<a href="#gdcalert27">alert27</a>
-<a href="#gdcalert28">alert28</a>
-<a href="#gdcalert29">alert29</a>
-<a href="#gdcalert30">alert30</a>
-
-<p style="color: red; font-weight: bold">>>>>> PLEASE check and correct alert issues and delete this message and the inline alerts.<hr></p>
-
-
 **ReadMe - Project 1 (Classical Tetris)**
 
-![alt_text](images/image12.png "image_tooltip")
+![Classical Tetris logo](images/image21.png "image_tooltip")
+
 ** **
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image2.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image2.png "image_tooltip")
-
-
-Contents
-
-
-[TOC]
-
-
-
 ## Description
 
 This project was undertaken in week 4 of the course at the end of the introduction to the front-end module. It was written in HTML, CSS, and Vanilla JavaScript.
@@ -219,33 +140,19 @@ The aim of the game is to get as many points as possible before the game board i
 ### Research
 
 
-### [Project management](https://trello.com/b/4BtgsPFU/classical-tetris)
+### [Project management]
 
 Adopting a “Game Development” template Trello board, I split the game functionality and coding into separate _milestones _each of which contained numerous _objectives _as cards. I also included columns for bugs & enhancements. This helped me pseudocode & split out functionality into different functions.
 
+![alt_text](images/image11.png "image_tooltip")
 
-
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image3.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image3.png "image_tooltip")
-
-
-<p id="gdcalert4" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image4.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert5">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image4.png "image_tooltip")
+![alt_text](images/image27.png "image_tooltip")
 
 
 
 #### MVP: Milestones & Objectives
 
-
-
-<p id="gdcalert5" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image5.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert6">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image5.png "image_tooltip")
+![alt_text](images/image6.png "image_tooltip")
 
 
 
@@ -262,19 +169,13 @@ Having a place for bug tracking from the beginning was helpful in recording what
 ### Design
 
 
-#### [Wireframe](https://www.figma.com/file/1JlAZEaPBxmBBIlAeDSw9x/Individual-Projects?type=design&node-id=0%3A1&mode=design&t=i4wOqWgRwIsnIovJ-1)
+#### [Wireframe]
 
 I utilised Figma here to draw out the wireframe with all HTML elements
 
 When making mobile responsive, I ideally should have created a separate wireframe for the mobile page. However, the incorporation of two main sections - main & sidebar - allowed a relatively easy transition.
 
-
-
-<p id="gdcalert6" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image6.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert7">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image6.png "image_tooltip")
-
+![Wireframe](images/image10.png "image_tooltip")
 
 
 #### Resources
@@ -286,12 +187,7 @@ I utilised various licence-free sites for resources such as audio files, images,
 
 In addition to laying out initial Elements, Variables, & Events, I wrote out how I expected each initial function to be achieved in my JS code
 
-
-
-<p id="gdcalert7" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image7.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert8">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image7.png "image_tooltip")
+![Pseudocode screenshot](images/image28.png "image_tooltip")
 
 
 
@@ -307,18 +203,9 @@ In addition to laying out initial Elements, Variables, & Events, I wrote out how
     * CSS styling (basic)
     * JavaScript: generate main grid
 
-
-
-<p id="gdcalert8" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image8.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert9">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image8.png "image_tooltip")
-
-
+![Homescreen day 1](images/image4.png "image_tooltip")
 
 #### Days 2 - 3 (weekend)
-
-
 
 * Milestone: start game/piece automations
 * Milestone: player interaction (translation)
@@ -334,10 +221,7 @@ While I was coding individual functions, I created test keyDown functions so I d
 
 
 
-<p id="gdcalert9" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image9.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert10">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image9.png "image_tooltip")
+![Test keyboard strokes](images/image7.png "image_tooltip")
 
 
 Central to the game’s functionality is the move down function. Each time a piece moves down (either automatically or through user interaction), in addition to moving the tetrimino itself, a number of checks must then be carried out:
@@ -350,12 +234,7 @@ Central to the game’s functionality is the move down function. Each time a pie
         * Is the tetrimino still touching the top of the grid?
     * Activate the next tetrimino
 
-
-
-<p id="gdcalert10" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image10.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert11">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image10.png "image_tooltip")
+![Move down function code screenshot](images/image29.png "image_tooltip")
 
 
 
@@ -411,12 +290,7 @@ My first ever deployment was very rewarding and allowed me to share with some of
 
 This day also featured another two wins: making the game responsive and allowing it to have two themes - classical themed Tetris was born!
 
-
-
-<p id="gdcalert11" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image11.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert12">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image11.png "image_tooltip")
+![Classical Tetris homescreen](images/image2.png "image_tooltip")
 
 
 I reviewed my JavaScript and refactored which included:
@@ -429,21 +303,12 @@ I reviewed my JavaScript and refactored which included:
 * One of the slickest examples of this is the ability to switch between themes either on starting the game or mid-game with the ✨_timeTravel function✨_
 
 
-
-<p id="gdcalert12" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image12.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert13">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image12.png "image_tooltip")
+![alt_text](images/image24.png "image_tooltip")
 
 
 _[Classical Tetris - 9 November 2023 - Watch Video](https://www.loom.com/share/2faa02ae0c6f4f9789244c8b57d407f9)_
 
-
-
-<p id="gdcalert13" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image13.gif). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert14">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image13.gif "image_tooltip")
+![Loom Video screenshot](images/image18.gif "image_tooltip")
 
 
 
@@ -454,37 +319,20 @@ _[Classical Tetris - 9 November 2023 - Watch Video](https://www.loom.com/share/2
 * Enhancements:
     * Implemented default colour palette via root variables in classical.css file
 
-
-
-<p id="gdcalert14" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image14.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert15">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image14.png "image_tooltip")
+![Roman color scheme CSS](images/image17.png "image_tooltip")
 
 
 
 
-    * [Player bug reporting form](https://forms.gle/TPocdkbM5Ex8WqG3A)
-        * Implanted a link to a Google form where players can report bugs; I then built automation in Zapier that would add a new card with these details to the player-reported bugs Trello list.
+* [Player bug reporting form](https://forms.gle/TPocdkbM5Ex8WqG3A)
+   * Implanted a link to a Google form where players can report bugs; I then built automation in Zapier that would add a new card with these details to the player-reported bugs Trello list.
 
 
+![Report a bug screenshot](images/image22.png "image_tooltip")
 
-<p id="gdcalert15" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image15.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert16">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
+![Bug reporter form](images/image13.png "image_tooltip")
 
-
-![alt_text](images/image15.png "image_tooltip")
-
-
-<p id="gdcalert16" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image16.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert17">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image16.png "image_tooltip")
-
-
-<p id="gdcalert17" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image17.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert18">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image17.png "image_tooltip")
+![Bug reporter Zap](images/image3.png "image_tooltip")
 
 
 
@@ -534,21 +382,12 @@ For the rotation function, I had initially planned to rotate pieces through 4 di
 Theoretically, when a tetrimino was to be rotated, I would need to iterate over each piece and determine where in the tetrimino it was and what configuration the tetrimino was in.
 
 
-
-<p id="gdcalert18" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image18.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert19">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image18.png "image_tooltip")
+![Rotate function spreadsheet](images/image14.png "image_tooltip")
 
 
 Rather than requiring different functions, I was able to create “rotation arrays”. When a piece is created, one central piece would be assigned as the tetrimino’s axis. When a tetrimino is rotated, the pieces would just revolve around this central axis. The translation required was independent of what shape the overall tetrimino was.
 
-
-
-<p id="gdcalert19" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image19.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert20">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image19.png "image_tooltip")
+![Rotate function spreadsheet 2](images/image5.png "image_tooltip")
 
 
 
@@ -561,12 +400,7 @@ Rather than requiring different functions, I was able to create “rotation arra
 
 The resulting arrays in my code; this allowed me to use the same rotate function for both rotation directions. Ideally, this could have perhaps been an object rather than 3 arrays of equal length.
 
-
-
-<p id="gdcalert20" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image20.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert21">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image20.png "image_tooltip")
+![Rotate function code screenshot](images/image23.png "image_tooltip")
 
 
 
@@ -584,11 +418,7 @@ In order to achieve this, I had a JavaScript timeTravel function that:
 * Change the logo & favicon sources in the main HTML
 
 
-
-<p id="gdcalert21" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image21.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert22">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image21.png "image_tooltip")
+![Time travel function](images/image9.png "image_tooltip")
 
 
 
@@ -609,26 +439,11 @@ In order to achieve this, I had to:
 
 While the game looks OK on a Pixel 6 and iPhone 15 Pro (both were available at home when coding), other players have reported it not displaying properly on different models.
 
+![Narrow mode CSS](images/image1.png "image_tooltip")
 
+![Narrow mode screenshot](images/image8.png "image_tooltip")
 
-<p id="gdcalert22" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image22.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert23">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image22.png "image_tooltip")
-
-
-
-
-<p id="gdcalert23" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image23.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert24">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image23.png "image_tooltip")
-
-
-<p id="gdcalert24" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image24.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert25">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image24.png "image_tooltip")
+![Narrow mode classical screenshot](images/image15.png "image_tooltip")
 
 
 
@@ -642,11 +457,7 @@ I utilised previous experience in building click-to-code products such as a Sale
 However, the use of different terminology and being extra strict about keeping the plan up to date, allowed me to work efficiently on one focus area at a time to deliver features that work effectively/smoothly.
 
 
-
-<p id="gdcalert25" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image25.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert26">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image25.png "image_tooltip")
+![Trello screenshot](images/image25.png "image_tooltip")
 
 
 
@@ -659,27 +470,18 @@ Core to the game’s automation, was moving a piece down at a set interval. Whil
 <p id="gdcalert26" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image26.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert27">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 
-![alt_text](images/image26.png "image_tooltip")
+![Auto move down function](images/image20.png "image_tooltip")
 
 
 When the level was increased, this would change the timeInterval, making it 5% faster each time. I achieved this by setting the timeInterval variable to 1000ms * 0.95^(level - 1).
 
 
-
-<p id="gdcalert27" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image27.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert28">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image27.png "image_tooltip")
+![Increase speed with score function](images/image30.png "image_tooltip")
 
 
 When a piece was hard-dropped, it would decrease the timeInterval down to 1ms. This would need to be reset when the tetrimino landed at the bottom to prevent a sudden column of tetriminoes and instant game over!
 
-
-
-<p id="gdcalert28" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image28.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert29">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image28.png "image_tooltip")
+![Hard drop function screenshot](images/image16.png "image_tooltip")
 
 
 When the game was over, this would need to be stopped to prevent the continuous build up of the score - especially if the final action was a hard drop and the counter was running at 1 point per millisecond.
@@ -690,18 +492,9 @@ When the game was over, this would need to be stopped to prevent the continuous 
 
 #### Resolved bugs
 
+![resolved bugs 1](images/image19.png "image_tooltip")
 
-
-<p id="gdcalert29" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image29.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert30">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image29.png "image_tooltip")
-
-
-<p id="gdcalert30" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image30.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert31">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/image30.png "image_tooltip")
+![resolved bugs 2](images/image26.png "image_tooltip")
 
 
 Unresolved bugs
