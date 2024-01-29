@@ -1,11 +1,15 @@
-**ReadMe - Project 1 (Classical Tetris)**
+# ReadMe - Project 1 (Classical Tetris)
 
 ![Classical Tetris logo](images/image21.png "image_tooltip")
 
 ** **
 ## Description
 
-This project was undertaken in week 4 of the course at the end of the introduction to the front-end module. It was written in HTML, CSS, and Vanilla JavaScript.
+This project was undertaken in week 4 of the course at the end of the introduction to the front-end module. 
+
+The brief was to create a fully functional retro computer game webpage using HTML, CSS, and Vanilla JavaScript.
+
+I wanted both a game that would have basic functionality at least equal to the original with the opportunity to add enhancements within both the JS functionality and CSS styling so I chose to make a multi-themed version of the arcade classic, Tetris, in both a classic and *classical* style.
 
 
 ## [Deployment link](https://philiphart1006.github.io/classical-tetris/)
@@ -192,6 +196,8 @@ In addition to laying out initial Elements, Variables, & Events, I wrote out how
 
 
 ## Build/Code Process
+
+*N.B. Coding snippets & highlights can be found outlined in further detail in Wins/Challenges/Key Learnings.*
 
 
 #### Day 1
@@ -464,10 +470,6 @@ However, the use of different terminology and being extra strict about keeping t
 #### setInterval
 
 Core to the game’s automation, was moving a piece down at a set interval. While the original setInterval function (snippet below) was fairly basic, in order to drop pieces quickly, increase difficulty, and pause/unpause the game, I had to be able to clear this, re-set, and change the timeInterval duration.
-
-
-
-<p id="gdcalert26" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/image26.png). Store image on your image server and adjust path/filename/extension if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert27">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
 
 
 ![Auto move down function](images/image20.png "image_tooltip")
